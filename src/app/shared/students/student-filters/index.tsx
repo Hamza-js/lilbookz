@@ -19,15 +19,10 @@ import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
 import { Title } from '@/components/ui/text';
 import { useFilterControls } from '@/hooks/use-filter-control';
 import { useSearchParams } from 'next/navigation';
-import Autocomplete from '@/components/google-map/autocomplete';
-import ForSaleFilter from './for-sale-filter';
-import PriceFilter from './price-filter';
-import AccommodationFilter from './accommodation-filter';
-import HometypeFilter from './hometype-filter';
 import { initialState } from './filter-utils';
 const FilterDrawerView = dynamic(() => import('./drawer-view'), { ssr: false });
 
-export default function ListingFilters({ className }: { className?: string }) {
+export default function StudentsFilters({ className }: { className?: string }) {
   const searchParams = useSearchParams();
   const [hasQueryParams, setHasQueryParams] = useState(false);
   const { openDrawer, closeDrawer } = useDrawer();
@@ -50,7 +45,7 @@ export default function ListingFilters({ className }: { className?: string }) {
     <div className={cn('flex items-center justify-between gap-3 ', className)}>
       <div className="relative flex flex-grow items-center gap-3">
         <div className="relative w-full xs:max-w-[298px]">
-          <Autocomplete
+          {/* <Autocomplete
             apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string}
             onPlaceSelect={handlePlaceSelect}
             spinnerClassName="hidden"
@@ -65,11 +60,11 @@ export default function ListingFilters({ className }: { className?: string }) {
               clearable: false,
             }}
             mapClassName="rounded-lg"
-          />
+          /> */}
         </div>
 
         <div className="hidden items-center gap-3 2xl:flex">
-          {/* <Popover placement="bottom-end" shadow="sm">
+          <Popover placement="bottom-end" shadow="sm">
             <Popover.Trigger>
               <Button type="button" variant="outline">
                 <PiSignpost className="me-2 text-lg text-gray-900" />
@@ -80,15 +75,15 @@ export default function ListingFilters({ className }: { className?: string }) {
             <Popover.Content className="p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
               {({ setOpen }) => (
                 <PopoverContent title="For Sale" setOpen={setOpen}>
-                  <ForSaleFilter
+                  {/* <ForSaleFilter
                     state={state}
                     applyFilter={applyFilter}
                     setOpen={setOpen}
-                  />
+                  /> */}
                 </PopoverContent>
               )}
             </Popover.Content>
-          </Popover> */}
+          </Popover>
 
           <Popover placement="bottom-end" shadow="sm">
             <Popover.Trigger>
@@ -105,11 +100,11 @@ export default function ListingFilters({ className }: { className?: string }) {
                   className="w-[300px]"
                   setOpen={setOpen}
                 >
-                  <PriceFilter
+                  {/* <PriceFilter
                     state={state}
                     applyFilter={applyFilter}
                     setOpen={setOpen}
-                  />
+                  /> */}
                 </PopoverContent>
               )}
             </Popover.Content>
@@ -130,11 +125,11 @@ export default function ListingFilters({ className }: { className?: string }) {
                   className="w-[276px]"
                   setOpen={setOpen}
                 >
-                  <AccommodationFilter
+                  {/* <AccommodationFilter
                     state={state}
                     applyFilter={applyFilter}
                     setOpen={setOpen}
-                  />
+                  /> */}
                 </PopoverContent>
               )}
             </Popover.Content>
@@ -155,11 +150,11 @@ export default function ListingFilters({ className }: { className?: string }) {
                   className="w-[276px]"
                   setOpen={setOpen}
                 >
-                  <HometypeFilter
+                  {/* <HometypeFilter
                     state={state}
                     applyFilter={applyFilter}
                     setOpen={setOpen}
-                  />
+                  /> */}
                 </PopoverContent>
               )}
             </Popover.Content>
