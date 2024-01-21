@@ -14,8 +14,11 @@ import { routes } from '@/config/routes';
 import { SignUpSchema, signUpSchema } from '@/utils/validators/signup.schema';
 
 const initialValues = {
+  firstName: '',
+  lastName: '',
   email: '',
   password: '',
+  confirmPassword: '',
   isAgreed: false,
 };
 
@@ -40,6 +43,24 @@ export default function SignUpForm() {
         {({ register, formState: { errors } }) => (
           <div className="space-y-5 lg:space-y-6">
             <Input
+              type="text"
+              size={isMedium ? 'lg' : 'xl'}
+              label="First Name"
+              placeholder="Enter your first name"
+              className="[&>label>span]:font-medium"
+              {...register('firstName')}
+              error={errors.firstName?.message}
+            />
+            <Input
+              type="text"
+              size={isMedium ? 'lg' : 'xl'}
+              label="Last Name"
+              placeholder="Enter your last name"
+              className="[&>label>span]:font-medium"
+              {...register('lastName')}
+              error={errors.lastName?.message}
+            />
+            <Input
               type="email"
               size={isMedium ? 'lg' : 'xl'}
               label="Email"
@@ -56,30 +77,15 @@ export default function SignUpForm() {
               className="[&>label>span]:font-medium"
               error={errors.password?.message}
             />
-            <div className="col-span-2 flex items-start text-gray-700">
-              <Checkbox
-                {...register('isAgreed')}
-                className="[&>label.items-center]:items-start [&>label>div.leading-none]:mt-0.5 [&>label>div.leading-none]:sm:mt-0 [&>label>span]:font-medium"
-                label={
-                  <Text as="span" className="ps-1 text-gray-500">
-                    By signing up you have agreed to our{' '}
-                    <Link
-                      href="/"
-                      className="font-semibold text-gray-700 transition-colors hover:text-primary"
-                    >
-                      Terms
-                    </Link>{' '}
-                    &{' '}
-                    <Link
-                      href="/"
-                      className="font-semibold text-gray-700 transition-colors hover:text-primary"
-                    >
-                      Privacy Policy
-                    </Link>
-                  </Text>
-                }
-              />
-            </div>
+            <Password
+              label="Confirm Password"
+              placeholder="Confirm your password"
+              size={isMedium ? 'lg' : 'xl'}
+              {...register('confirmPassword')}
+              className="[&>label>span]:font-medium"
+              error={errors.confirmPassword?.message}
+            />
+
             <Button
               className="w-full"
               type="submit"
