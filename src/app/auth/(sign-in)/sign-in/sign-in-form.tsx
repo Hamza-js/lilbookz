@@ -27,6 +27,7 @@ export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     try {
       setLoading(true);
@@ -51,11 +52,13 @@ export default function SignInForm() {
       }
 
       if (response.data.status === 'logged_in') {
-        console.log('logged in:', response.data);
+        localStorage.setItem('loggedInStatus', JSON.stringify(true));
+        localStorage.setItem('userData', JSON.stringify(response.data));
+        localStorage.setItem('userEmail', data.email);
         await handleTokenRequest();
       }
     } catch (error: any) {
-      console.error('Error:', error.response || error.message || error);
+      // console.error('Error:', error.response || error.message || error);
       toast.error(<Text as="b">An unexpected error occurred.</Text>);
     } finally {
       setLoading(false);
@@ -80,7 +83,6 @@ export default function SignInForm() {
       });
 
       localStorage.setItem('tokenLilBookz', JSON.stringify(response.data));
-      console.log(response.data);
       router.replace('/');
     } catch (error: any) {
       toast.error(
@@ -118,14 +120,14 @@ export default function SignInForm() {
               {...register('password')}
               error={errors.password?.message}
             />
-            <div className="flex items-center justify-end pb-1">
+            {/* <div className="flex items-center justify-end pb-1">
               <Link
                 href={routes.auth.forgotPassword}
                 className="h-auto p-0 text-sm font-semibold text-gray-700 underline transition-colors hover:text-primary hover:no-underline"
               >
                 Forgot Password?
               </Link>
-            </div>
+            </div> */}
 
             <Button
               className="w-full"
@@ -143,7 +145,7 @@ export default function SignInForm() {
           </div>
         )}
       </Form>
-      <Text className="mt-6 text-center text-[15px] leading-loose text-gray-500 md:mt-7 lg:mt-9 lg:text-base">
+      {/* <Text className="mt-6 text-center text-[15px] leading-loose text-gray-500 md:mt-7 lg:mt-9 lg:text-base">
         Don’t have an account?{' '}
         <Link
           href={routes.auth.signUp}
@@ -151,7 +153,7 @@ export default function SignInForm() {
         >
           Sign Up
         </Link>
-      </Text>
+      </Text> */}
     </>
   );
 }

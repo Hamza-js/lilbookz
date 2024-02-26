@@ -1,216 +1,139 @@
-'use client';
-
-import { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import {
-  PiBed,
-  PiCaretDownBold,
-  PiCurrencyDollar,
-  PiHouse,
-  PiMapPin,
-  PiSignpost,
-  PiSliders,
-  PiTrashDuotone,
-} from 'react-icons/pi';
+import { PiSliders } from 'react-icons/pi';
 import cn from '@/utils/class-names';
-import { Popover } from '@/components/ui/popover';
 import { Button } from '@/components/ui/button';
-import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
 import { Title } from '@/components/ui/text';
-import { useFilterControls } from '@/hooks/use-filter-control';
-import { useSearchParams } from 'next/navigation';
-import { initialState } from './filter-utils';
-const FilterDrawerView = dynamic(() => import('./drawer-view'), { ssr: false });
+import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
+import { ActionIcon } from '@/components/ui/action-icon';
+import { PiXBold } from 'react-icons/pi';
+import ClassTypeFilter from './classType-filter';
+import ClassesFilter from './classes-filter';
+import GenreFilter from './genre-filter';
+import { useState } from 'react';
 
-export default function StudentsFilters({ className }: { className?: string }) {
-  const searchParams = useSearchParams();
-  const [hasQueryParams, setHasQueryParams] = useState(false);
+export default function StudentsFilters({
+  className,
+  classGenres,
+  classTypes,
+  classes,
+  onFiltersChange,
+  studentsToDisplay,
+  filtersApplied,
+  setFiltersApplied,
+}: any) {
   const { openDrawer, closeDrawer } = useDrawer();
-  const { state, applyFilter, reset } = useFilterControls<
-    typeof initialState,
-    any
-  >(initialState);
+  const [selectedGenre, setSelectedGenre] = useState('');
+  const [selectedType, setSelectedType] = useState('');
 
-  const handlePlaceSelect = (place: any) => {
-    applyFilter('search', place.address);
-  };
-
-  useEffect(() => {
-    const items = [];
-    searchParams.forEach((item) => items.push(item));
-    setHasQueryParams(Boolean(items.length));
-  }, [searchParams]);
-
-  return (
-    <div className={cn('flex items-center justify-between gap-3 ', className)}>
-      <div className="relative flex flex-grow items-center gap-3">
-        <div className="relative w-full xs:max-w-[298px]">
-          {/* <Autocomplete
-            apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAP_API_KEY as string}
-            onPlaceSelect={handlePlaceSelect}
-            spinnerClassName="hidden"
-            hideMap
-            inputProps={{
-              prefix: <PiMapPin className="h-5 w-5" />,
-              placeholder: 'City, Neighborhood, ZIP, Address',
-              inputClassName:
-                'dark:[&_input::placeholder]:!text-gray-600 [&_input]:pe-3 [&_input]:ps-10',
-              prefixClassName: 'absolute start-3',
-              className: '[&_label>div]:p-0',
-              clearable: false,
-            }}
-            mapClassName="rounded-lg"
-          /> */}
-        </div>
-
-        <div className="hidden items-center gap-3 2xl:flex">
-          <Popover placement="bottom-end" shadow="sm">
-            <Popover.Trigger>
-              <Button type="button" variant="outline">
-                <PiSignpost className="me-2 text-lg text-gray-900" />
-                For Sale
-                <PiCaretDownBold className="ms-2 h-4 w-4" />
-              </Button>
-            </Popover.Trigger>
-            <Popover.Content className="p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
-              {({ setOpen }) => (
-                <PopoverContent title="For Sale" setOpen={setOpen}>
-                  {/* <ForSaleFilter
-                    state={state}
-                    applyFilter={applyFilter}
-                    setOpen={setOpen}
-                  /> */}
-                </PopoverContent>
-              )}
-            </Popover.Content>
-          </Popover>
-
-          <Popover placement="bottom-end" shadow="sm">
-            <Popover.Trigger>
-              <Button type="button" variant="outline">
-                <PiCurrencyDollar className="me-1 text-lg text-gray-900" />
-                Price
-                <PiCaretDownBold className="ms-2 h-4 w-4" />
-              </Button>
-            </Popover.Trigger>
-            <Popover.Content className="p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
-              {({ setOpen }) => (
-                <PopoverContent
-                  title="Price"
-                  className="w-[300px]"
-                  setOpen={setOpen}
-                >
-                  {/* <PriceFilter
-                    state={state}
-                    applyFilter={applyFilter}
-                    setOpen={setOpen}
-                  /> */}
-                </PopoverContent>
-              )}
-            </Popover.Content>
-          </Popover>
-
-          <Popover placement="bottom-end">
-            <Popover.Trigger>
-              <Button type="button" variant="outline">
-                <PiBed className="me-2 text-lg text-gray-900" />
-                Beds & Baths
-                <PiCaretDownBold className="ms-2 h-4 w-4" />
-              </Button>
-            </Popover.Trigger>
-            <Popover.Content className="p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
-              {({ setOpen }) => (
-                <PopoverContent
-                  title="Number of Bedrooms"
-                  className="w-[276px]"
-                  setOpen={setOpen}
-                >
-                  {/* <AccommodationFilter
-                    state={state}
-                    applyFilter={applyFilter}
-                    setOpen={setOpen}
-                  /> */}
-                </PopoverContent>
-              )}
-            </Popover.Content>
-          </Popover>
-
-          <Popover placement="bottom-end" shadow="sm">
-            <Popover.Trigger>
-              <Button type="button" variant="outline">
-                <PiHouse className="me-2 text-lg text-gray-900" />
-                Home Type
-                <PiCaretDownBold className="ms-2 h-4 w-4" />
-              </Button>
-            </Popover.Trigger>
-            <Popover.Content className="p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
-              {({ setOpen }) => (
-                <PopoverContent
-                  title="Home Type"
-                  className="w-[276px]"
-                  setOpen={setOpen}
-                >
-                  {/* <HometypeFilter
-                    state={state}
-                    applyFilter={applyFilter}
-                    setOpen={setOpen}
-                  /> */}
-                </PopoverContent>
-              )}
-            </Popover.Content>
-          </Popover>
-
-          {hasQueryParams && (
-            <Button
-              type="button"
-              variant="flat"
-              onClick={() => {
-                closeDrawer();
-                reset();
-              }}
-            >
-              <PiTrashDuotone className="me-2 h-5 w-5" />
-              Clear
-            </Button>
-          )}
-        </div>
+  const generateDrawerContent = () => (
+    <div className="relative flex h-full w-full flex-col bg-white px-5 py-3.5 dark:bg-gray-50">
+      <div className="-mx-5 mb-6 flex items-center justify-between border-b border-muted px-4 pb-4">
+        <Title as="h5" className="font-semibold">
+          More Filters
+        </Title>
+        <ActionIcon
+          size="sm"
+          rounded="full"
+          variant="text"
+          onClick={() => closeDrawer()}
+        >
+          <PiXBold className="h-4 w-4" />
+        </ActionIcon>
       </div>
-      <Button
-        type="button"
-        className="flex-shrink-0"
-        onClick={() =>
-          openDrawer({
-            view: <FilterDrawerView />,
-            placement: 'right',
-          })
-        }
-      >
-        <PiSliders className="me-2 h-4 w-4 rotate-90" />
-        Filters
-      </Button>
+
+      <div className="mb-5 px-5">
+        <GenreFilter
+          classGenres={classGenres}
+          onFilterChange={handleGenreFilterChange}
+        />
+      </div>
+
+      <div className="mb-5 px-5">
+        <ClassTypeFilter
+          classTypes={classTypes}
+          onFilterChange={handleClassTypeFilterChange}
+          selectedGenre={selectedGenre}
+        />
+      </div>
+
+      <div className="mb-5 px-5">
+        <ClassesFilter
+          classes={classes}
+          onFilterChange={handleClassFilterChange}
+          selectedType={selectedType}
+        />
+      </div>
     </div>
   );
-}
 
-export function PopoverContent({
-  title,
-  children,
-  className,
-}: React.PropsWithChildren<{
-  title: string;
-  className?: string;
-  setOpen: (value: boolean) => void;
-}>) {
+  const handleGenreFilterChange = (value: any) => {
+    setSelectedGenre(value.value.value);
+    onFiltersChange((prevFilters: any) => ({
+      ...prevFilters,
+      classGenre: value,
+    }));
+    setFiltersApplied(true);
+    closeDrawer();
+  };
+
+  const handleClassTypeFilterChange = (value: any) => {
+    setSelectedType(value.value.value);
+    onFiltersChange((prevFilters: any) => ({
+      ...prevFilters,
+      classType: value,
+    }));
+    setFiltersApplied(true);
+    closeDrawer();
+  };
+
+  const handleClassFilterChange = (value: any) => {
+    closeDrawer();
+    onFiltersChange((prevFilters: any) => ({
+      ...prevFilters,
+      class: value,
+    }));
+    setFiltersApplied(true);
+  };
+
+  const handleResetFilters = () => {
+    setSelectedGenre('');
+    setSelectedType('');
+    setFiltersApplied(false);
+    onFiltersChange({
+      classGenre: '',
+      classType: '',
+      class: '',
+    });
+    setFiltersApplied(false);
+  };
+
   return (
-    <div className={cn('w-44', className)}>
-      <div className="p-4 pt-3.5">
-        <Title
-          as="h4"
-          className="mb-5 text-start text-sm font-semibold capitalize text-gray-600"
+    <div className={cn('flex items-center justify-between gap-3', className)}>
+      <div className="relative flex flex-grow items-center gap-3">
+        <h3>{studentsToDisplay.length} Students</h3>
+      </div>
+      <div>
+        {filtersApplied && (
+          <Button
+            variant="outline"
+            className="mr-4 flex-shrink-0 p-1 px-3"
+            onClick={handleResetFilters}
+          >
+            Reset Filter
+          </Button>
+        )}
+        <Button
+          type="button"
+          className="flex-shrink-0"
+          onClick={() =>
+            openDrawer({
+              view: generateDrawerContent(),
+              placement: 'right',
+            })
+          }
         >
-          {title}
-        </Title>
-        {children}
+          <PiSliders className="me-2 h-4 w-4 rotate-90" />
+          Filters
+        </Button>
       </div>
     </div>
   );

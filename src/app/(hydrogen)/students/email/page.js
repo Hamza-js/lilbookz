@@ -1,12 +1,9 @@
-import { routes } from '@/config/routes';
-import PageHeader from '@/app/shared/page-header';
-import StudentsFilters from '@/app/shared/students/student-filters';
-import { metaObject } from '@/config/site.config';
-import StudentEmail from '@/app/shared/students/email';
+'use client';
 
-export const metadata = {
-  ...metaObject('Students'),
-};
+import PageHeader from '@/app/shared/page-header';
+import StudentEmail from './StudentEmail';
+import { useEffect } from 'react';
+import { redirect } from 'next/navigation';
 
 const pageHeader = {
   title: 'Email Students',
@@ -15,13 +12,21 @@ const pageHeader = {
       name: 'Students',
     },
     {
-      // href: routes.searchAndFilter.realEstate,
       name: 'Email',
     },
   ],
 };
 
 function StudentEmails() {
+  useEffect(() => {
+    const storedToken = localStorage.getItem('tokenLilBookz');
+    const parsedToken = JSON.parse(storedToken);
+    if (!parsedToken) {
+      redirect('/auth/sign-in');
+    }
+  }, []);
+
+
   return (
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />

@@ -1,4 +1,4 @@
-'use client';
+'use client'
 
 import Link from 'next/link';
 import toast from 'react-hot-toast';
@@ -14,6 +14,8 @@ import {
   forgetPasswordSchema,
   ForgetPasswordSchema,
 } from '@/utils/validators/forget-password.schema';
+import baseUrl from '@/utils/baseUrl';
+import Spinner from '@/components/ui/spinner';
 
 const initialValues = {
   email: '',
@@ -22,17 +24,44 @@ const initialValues = {
 export default function ForgetPasswordForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [reset, setReset] = useState({});
-  const onSubmit: SubmitHandler<ForgetPasswordSchema> = (data) => {
-    console.log('forgot password form', data);
-    toast.success(
-      <Text>
-        Reset link sent to this email:{' '}
-        <Text as="b" className="font-semibold">
-          {data.email}
+  const [loading, setLoading] = useState(false);
+
+  const onSubmit: SubmitHandler<ForgetPasswordSchema> = async (data) => {
+    try {
+      setLoading(true);
+      const myHeaders = new Headers();
+      myHeaders.append("Authorization", "Bearer fcbde38ddf36656cf3faec0846b61d19dae6eccd");
+      myHeaders.append("Cookie", "PHPSESSID=kv8o99sccp06ji9ro4c2gmj3is");
+
+      const formdata = new FormData();
+      formdata.append("email", data.email);
+
+      const requestOptions: any = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow'
+      };
+
+      const response = await fetch(`${baseUrl}/api/forgotpassword`, requestOptions);
+      const result = await response.json();
+
+      // console.log(result); 
+      toast.success( 
+        <Text>
+          Reset link sent to this email:
+          <Text as="b" className="font-semibold">
+            {data.email}
+          </Text>
         </Text>
-      </Text>
-    );
-    setReset(initialValues);
+      );
+      setReset(initialValues);
+    } catch (error) {
+      console.error('Error:', error);
+      // Handle error here
+    } finally{
+      setLoading(false);
+    }
   };
 
   return (
@@ -61,7 +90,13 @@ export default function ForgetPasswordForm() {
               type="submit"
               size={isMedium ? 'lg' : 'xl'}
             >
-              Reset Password
+              {loading ? (
+                <div className="m-auto">
+                  <Spinner size="sm" className="text-white" />
+                </div>
+              ) : (
+                'Reset Password'
+              )}
             </Button>
           </div>
         )}

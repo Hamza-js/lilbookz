@@ -34,6 +34,6 @@
     "**/*.cjs",
     "**/*.mjs",
     ".next/types/**/*.ts"
-  ],
+, "src/app/(hydrogen)/students/current/page.js", "src/app/auth/(sign-in)/sign-in/sign-in-form.tsx", "src/app/shared/students/student-filters/index.jsx", "src/app/auth/(forgot-password)/forgot-password/forgot-password-form.tsx", "src/app/shared/students/student-filters/drawer-view.tsx", "src/app/(hydrogen)/students/email/page.js", "src/app/(hydrogen)/students/email/ClassesFilter.js", "src/app/(hydrogen)/students/cancelled/page.js"  ],
   "exclude": ["node_modules"]
 }

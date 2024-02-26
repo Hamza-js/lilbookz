@@ -1,2 +1,2 @@
-const baseUrl = 'https://www.lilbookz.co.uk';
+const baseUrl = 'http://localhost:3000';
 export default baseUrl;

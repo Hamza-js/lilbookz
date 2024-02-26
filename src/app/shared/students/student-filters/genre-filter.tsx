@@ -1,37 +1,23 @@
-import { useEffect, useState } from 'react';
 import { Select } from '@/components/ui/select';
-import { InitialStateType, genreData } from './filter-utils';
 
-export default function ParkingFilter({
-  state,
-  applyFilter,
-}: {
-  state: InitialStateType;
-  applyFilter: (query: string, value: any) => void;
-}) {
-  const [selected, setSelected] = useState('any');
-
-  useEffect(() => {
-    if (state.parking_spots) setSelected(state.parking_spots);
-  }, [state.parking_spots]);
+export default function GenreFilter({ classGenres, onFilterChange }: any) {
+  const formattedClassGenres = classGenres.map((type: any) => ({
+    label: type.name,
+    value: type.id,
+  }));
 
   return (
-    <div className="space-y-3">
+    <div className="">
       <Select
         selectClassName="w-full"
-        label="Genre"
-        labelClassName="text-start text-sm 2xl:text-base font-semibold text-gray-900 mb-5 font-lexend"
-        placeholder="No min"
-        options={genreData}
-        value={selected}
+        label="Select a Class Genre"
+        labelClassName="text-start text-sm 2xl:text-base font-semibold text-gray-900 font-lexend"
+        placeholder="Class Genres"
+        options={formattedClassGenres}
         onChange={(value: string) => {
-          setSelected(value);
-          applyFilter('parking_spots', value);
+          onFilterChange({ filterType: 'classType', value });
         }}
-        getOptionValue={(option) => option.value}
-        displayValue={(selected) =>
-          genreData?.find((prk) => prk.value === selected)?.label ?? ''
-        }
+        // getOptionValue={(option) => option.id}
         inPortal={false}
       />
     </div>

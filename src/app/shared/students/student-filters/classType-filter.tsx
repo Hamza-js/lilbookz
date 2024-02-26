@@ -1,37 +1,46 @@
-import { useEffect, useState } from 'react';
 import { Select } from '@/components/ui/select';
-import { InitialStateType, classTypeData } from './filter-utils';
+import { useEffect, useState } from 'react';
 
 export default function ClassTypeFilter({
-  state,
-  applyFilter,
-}: {
-  state: InitialStateType;
-  applyFilter: (query: string, value: any) => void;
-}) {
-  const [selected, setSelected] = useState('any');
+  classTypes,
+  onFilterChange,
+  selectedGenre,
+}: any) {
+  const [filteredClassTypes, setFilteredClassTypes] = useState([]);
 
   useEffect(() => {
-    if (state.parking_spots) setSelected(state.parking_spots);
-  }, [state.parking_spots]);
+    if (selectedGenre) {
+      console.log('Selected Genre', selectedGenre);
+      const filteredTypes = classTypes.filter(
+        (type: any) => type.genre === selectedGenre
+      );
+      setFilteredClassTypes(
+        filteredTypes.map((type: any) => ({
+          label: type.name,
+          value: type.id,
+        }))
+      );
+    } else {
+      setFilteredClassTypes(
+        classTypes.map((type: any) => ({
+          label: type.name,
+          value: type.id,
+        }))
+      );
+    }
+  }, [selectedGenre, classTypes]);
 
   return (
-    <div className="space-y-3">
+    <div className="">
       <Select
         selectClassName="w-full"
-        label="Class Type"
-        labelClassName="text-start text-sm 2xl:text-base font-semibold text-gray-900 mb-5 font-lexend"
-        placeholder="No min"
-        options={classTypeData}
-        value={selected}
+        label="Select a Class Type"
+        labelClassName="text-start text-sm 2xl:text-base font-semibold text-gray-900 space-y-3 font-lexend"
+        placeholder="Class Types"
+        options={filteredClassTypes}
         onChange={(value: string) => {
-          setSelected(value);
-          applyFilter('parking_spots', value);
+          onFilterChange({ filterType: 'classType', value });
         }}
-        getOptionValue={(option) => option.value}
-        displayValue={(selected) =>
-          classTypeData?.find((prk) => prk.value === selected)?.label ?? ''
-        }
         inPortal={false}
       />
     </div>

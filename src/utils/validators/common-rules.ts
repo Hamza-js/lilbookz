@@ -18,9 +18,9 @@ export const validatePassword = z
   .string()
   .min(1, { message: messages.passwordRequired })
   .min(6, { message: messages.passwordLengthMin })
-  .regex(new RegExp('.*[A-Z].*'), {
-    message: messages.passwordOneUppercase,
-  })
+  // .regex(new RegExp('.*[A-Z].*'), {
+  //   message: messages.passwordOneUppercase,
+  // })
   .regex(new RegExp('.*[a-z].*'), {
     message: messages.passwordOneLowercase,
   })

@@ -4,21 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Title } from '@/components/ui/text';
 import SimpleBar from '@/components/ui/simplebar';
 import { useMedia } from '@/hooks/use-media';
-import { useFilterControls } from '@/hooks/use-filter-control';
+// import { useFilterControls } from '@/hooks/use-filter-control';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
 import { ActionIcon } from '@/components/ui/action-icon';
 import { initialState } from './filter-utils';
-import ParkingFilter from './genre-filter';
 import { PiXBold } from 'react-icons/pi';
 import hasSearchedParams from '@/utils/has-searched-params';
 import ClassTypeFilter from './classType-filter';
 import ClassesFilter from './classes-filter';
+import GenreFilter from './genre-filter';
 
-export default function FilterDrawerView() {
-  const { state, reset, applyFilter, clearFilter } = useFilterControls<
-    typeof initialState,
-    any
-  >(initialState);
+export default function FilterDrawerView({ classTypes }: { classTypes: any }) {
+  // const { state, reset, applyFilter, clearFilter } = useFilterControls();
   const isWide = useMedia('(min-width: 1537px)', false);
   const { closeDrawer } = useDrawer();
 
@@ -40,7 +37,7 @@ export default function FilterDrawerView() {
 
       <SimpleBar className="-mx-5 min-h-[calc(100%-10rem)]">
         <div className="space-y-9 px-5">
-          <ParkingFilter state={state} applyFilter={applyFilter} />
+          <GenreFilter state={state} applyFilter={applyFilter} />
         </div>
 
         <div className="space-y-9 px-5">

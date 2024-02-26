@@ -39,7 +39,7 @@ export default function ControlledTable({
   paginatorClassName,
   className,
   ...tableProps
-}: ControlledTableProps) {
+}: z) {
   if (isLoading) {
     return (
       <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
