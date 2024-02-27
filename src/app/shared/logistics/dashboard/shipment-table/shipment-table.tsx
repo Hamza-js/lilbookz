@@ -74,7 +74,7 @@ export default function ShipmentTable() {
           onSearchClear: () => {
             handleSearch('');
           },
-          onSearchChange: (event) => {
+          onSearchChange: (event:any) => {
             handleSearch(event.target.value);
           },
           hasSearched: isFiltered,

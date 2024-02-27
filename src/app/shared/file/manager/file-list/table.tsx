@@ -92,7 +92,7 @@ export default function FileListTable({
         scroll={{ x: 1300 }}
         variant="modern"
         tableLayout="fixed"
-        rowKey={(record) => record.id}
+        rowKey={(record:any) => record.id}
         paginatorOptions={{
           pageSize,
           setPageSize,

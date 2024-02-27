@@ -39,7 +39,7 @@ export default function ControlledTable({
   paginatorClassName,
   className,
   ...tableProps
-}: z) {
+}: any) {
   if (isLoading) {
     return (
       <div className="grid h-full min-h-[128px] flex-grow place-content-center items-center justify-center">
@@ -62,7 +62,7 @@ export default function ControlledTable({
       <div className="relative">
         <Table
           scroll={{ x: 1300 }}
-          rowKey={(record) => record.id}
+          rowKey={(record:any) => record.id}
           className={cn(className)}
           {...tableProps}
         />

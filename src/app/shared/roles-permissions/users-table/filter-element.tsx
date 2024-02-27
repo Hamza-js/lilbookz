@@ -103,7 +103,7 @@ export default function FilterElement({
           placeholder="Search for users..."
           value={searchTerm}
           onClear={() => onSearch('')}
-          onChange={(event) => onSearch(event.target.value)}
+          onChange={(event:any) => onSearch(event.target.value)}
           prefix={<PiMagnifyingGlassBold className="h-4 w-4" />}
           rounded="lg"
           clearable

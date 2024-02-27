@@ -80,7 +80,7 @@ export default function LoggedInDevices({
         // @ts-ignore
         columns={visibleColumns}
         variant="modern"
-        rowKey={(record) => record.id}
+        rowKey={(record:any) => record.id}
         className="w-full text-sm"
         paginatorOptions={{
           pageSize,

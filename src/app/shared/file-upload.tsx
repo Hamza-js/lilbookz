@@ -128,7 +128,7 @@ export const FileInput = ({
         ref={imageRef}
         accept={accept}
         multiple={multiple}
-        onChange={(event) => handleFileDrop(event)}
+        onChange={(event:any) => handleFileDrop(event)}
         className="mb-6 min-h-[280px] justify-center border-dashed bg-gray-50 dark:bg-transparent"
       />
 

@@ -73,7 +73,7 @@ export default function OrderViewProducts() {
       columns={columns}
       className="text-sm"
       variant="minimal"
-      rowKey={(record) => record.id}
+      rowKey={(record:any) => record.id}
       scroll={{ x: 800 }}
     />
   );

@@ -79,7 +79,7 @@ export default function BillingHistoryTable({
         columns={visibleColumns}
         scroll={{ x: 1300 }}
         variant="modern"
-        rowKey={(record) => record.id}
+        rowKey={(record:any) => record.id}
         className="text-sm"
         paginatorOptions={{
           pageSize,

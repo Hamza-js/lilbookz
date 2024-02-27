@@ -99,7 +99,7 @@ function InvoiceDetailsListTable() {
       data={invoiceItems}
       columns={columns}
       variant="minimal"
-      rowKey={(record) => record.id}
+      rowKey={(record:any) => record.id}
       scroll={{ x: 660 }}
       className="mb-11"
     />

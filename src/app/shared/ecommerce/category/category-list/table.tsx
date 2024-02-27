@@ -89,7 +89,7 @@ export default function CategoryTable() {
         onSearchClear: () => {
           handleSearch('');
         },
-        onSearchChange: (event) => {
+        onSearchChange: (event:any) => {
           handleSearch(event.target.value);
         },
         hasSearched: isFiltered,

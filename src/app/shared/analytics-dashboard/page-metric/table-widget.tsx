@@ -99,7 +99,7 @@ export default function PageMetrics({
             columns={visibleColumns}
             scroll={{ x: 1300 }}
             variant="elegant"
-            rowKey={(record) => record.id}
+            rowKey={(record:any) => record.id}
             tableLayout="fixed"
             className="mt-4 text-sm"
           />

@@ -102,7 +102,7 @@ export default function OrderTable({
         columns={visibleColumns}
         expandable={{
           expandIcon: CustomExpandIcon,
-          expandedRowRender: (record) => <ExpandedOrderRow record={record} />,
+          expandedRowRender: (record:any) => <ExpandedOrderRow record={record} />,
         }}
         paginatorOptions={{
           pageSize,
@@ -116,7 +116,7 @@ export default function OrderTable({
           onSearchClear: () => {
             handleSearch('');
           },
-          onSearchChange: (event) => {
+          onSearchChange: (event:any) => {
             handleSearch(event.target.value);
           },
           hasSearched: isFiltered,

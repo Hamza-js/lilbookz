@@ -140,7 +140,7 @@ export default function ShipmentListTable() {
           onSearchClear: () => {
             handleSearch('');
           },
-          onSearchChange: (event) => {
+          onSearchChange: (event: any) => {
             handleSearch(event.target.value);
           },
           hasSearched: isFiltered,

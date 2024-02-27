@@ -176,7 +176,7 @@ export default function OrderProducts() {
       data={tableData}
       columns={columns}
       className="text-sm"
-      rowKey={(record) => record.id}
+      rowKey={(record:any) => record.id}
       variant="minimal"
       scroll={{ x: 600 }}
     />

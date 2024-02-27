@@ -36,7 +36,7 @@ export default function FilterDrawerView({ classTypes }: { classTypes: any }) {
       </div>
 
       <SimpleBar className="-mx-5 min-h-[calc(100%-10rem)]">
-        <div className="space-y-9 px-5">
+        {/* <div className="space-y-9 px-5">
           <GenreFilter state={state} applyFilter={applyFilter} />
         </div>
 
@@ -46,7 +46,7 @@ export default function FilterDrawerView({ classTypes }: { classTypes: any }) {
 
         <div className="space-y-9 px-5">
           <ClassesFilter state={state} applyFilter={applyFilter} />
-        </div>
+        </div> */}
       </SimpleBar>
 
       <div className="sticky bottom-0 flex items-center justify-center gap-3 bg-white pb-3 pt-5 dark:bg-gray-50">
@@ -55,7 +55,7 @@ export default function FilterDrawerView({ classTypes }: { classTypes: any }) {
             size="lg"
             variant="outline"
             onClick={() => {
-              reset();
+              // reset();
               closeDrawer();
             }}
             className="flex-shrink-0"

@@ -126,7 +126,7 @@ export default function BasicTableWidget({
             placeholder={searchPlaceholder}
             value={searchTerm}
             onClear={() => handleSearch('')}
-            onChange={(event) => handleSearch(event.target.value)}
+            onChange={(event:any) => handleSearch(event.target.value)}
             clearable
             prefix={<PiMagnifyingGlassBold className="h-4 w-4" />}
           />

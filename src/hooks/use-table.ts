@@ -36,7 +36,7 @@ export function useTable<T extends AnyObject>(
     if (selectedRowKeys.length === data.length) {
       setSelectedRowKeys([]);
     } else {
-      setSelectedRowKeys(data.map((record) => record.id));
+      setSelectedRowKeys(data.map((record:any) => record.id));
     }
   };
 
