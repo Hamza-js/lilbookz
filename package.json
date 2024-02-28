@@ -49,6 +49,7 @@
     "glob": "^10.3.10",
     "jotai": "2.6.1",
     "lodash": "^4.17.21",
+    "micromatch": "^4.0.5",
     "next": "14.0.4",
     "next-auth": "^4.24.5",
     "next-themes": "^0.2.1",
