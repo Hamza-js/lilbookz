@@ -43,7 +43,7 @@ const durations = [
   { label: '60 Minutes', value: '60 Minutes' },
 ];
 
-const classForm = ({ classTypes, classGenres }) => {
+const ClassForm = ({ classTypes, classGenres }) => {
   const [value, setValue] = useState(null);
   const [genre, setGenre] = useState(null);
   const [type, setType] = useState(null);
@@ -224,4 +224,4 @@ const classForm = ({ classTypes, classGenres }) => {
   );
 };
 
-export default classForm;
+export default ClassForm;
