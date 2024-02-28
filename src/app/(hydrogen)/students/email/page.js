@@ -19,13 +19,14 @@ const pageHeader = {
 
 function StudentEmails() {
   useEffect(() => {
-    const storedToken = localStorage.getItem('tokenLilBookz');
-    const parsedToken = JSON.parse(storedToken);
-    if (!parsedToken) {
-      redirect('/auth/sign-in');
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('tokenLilBookz');
+      const parsedToken = JSON.parse(storedToken);
+      if (!parsedToken) {
+        redirect('/auth/sign-in');
+      }
     }
   }, []);
-
 
   return (
     <div className="@container">
