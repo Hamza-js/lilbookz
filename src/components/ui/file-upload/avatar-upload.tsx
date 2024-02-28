@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { useCallback, useState } from 'react';
-import { FileWithPath } from '@uploadthing/react';
+// import type { FileWithPath } from '@uploadthing/react';
 import { useDropzone } from '@uploadthing/react/hooks';
 import {
   UploadFileResponse,
@@ -67,9 +67,9 @@ export default function AvatarUpload({
     : [];
 
   const onDrop = useCallback(
-    (acceptedFiles: FileWithPath[]) => {
+    (acceptedFiles: any) => {
       setFiles([
-        ...acceptedFiles.map((file) =>
+        ...acceptedFiles.map((file:any) =>
           Object.assign(file, {
             preview: URL.createObjectURL(file),
           })
