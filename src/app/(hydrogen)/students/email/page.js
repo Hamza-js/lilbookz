@@ -4,6 +4,7 @@ import PageHeader from '@/app/shared/page-header';
 const StudentEmail = dynamic(() => import('./StudentEmail'), { ssr: false });
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
+import dynamic from 'next/dynamic';
 
 const pageHeader = {
   title: 'Email Students',
