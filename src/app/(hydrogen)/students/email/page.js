@@ -1,7 +1,7 @@
 'use client';
 
 import PageHeader from '@/app/shared/page-header';
-import StudentEmail from './StudentEmail';
+const StudentEmail = dynamic(() => import('./StudentEmail'), { ssr: false });
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
 
