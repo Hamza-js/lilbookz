@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import toast from 'react-hot-toast';
 import { useCallback, useState } from 'react';
-import type { FileWithPath } from '@uploadthing/react';
+import { FileWithPath } from '@uploadthing/react';
 import { useDropzone } from '@uploadthing/react/hooks';
 import {
   UploadFileResponse,
