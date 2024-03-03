@@ -82,7 +82,7 @@ function Classes() {
 
       // console.log('mergedDataWithTypes', mergedDataWithTypes);
     }
-  }, [franchiseClassesData]);
+  }, [franchiseClassesData, isLoading1, isLoading2, isLoading, classTypes]);
 
   // console.log('mergedData', mergedData);
 

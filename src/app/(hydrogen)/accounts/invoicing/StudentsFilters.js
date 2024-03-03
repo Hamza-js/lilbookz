@@ -1,10 +1,9 @@
-import { PiSliders } from 'react-icons/pi';
+import { PiSliders, PiXBold } from 'react-icons/pi';
 import cn from '@/utils/class-names';
 import { Button } from '@/components/ui/button';
 import { Title } from '@/components/ui/text';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
 import { ActionIcon } from '@/components/ui/action-icon';
-import { PiXBold } from 'react-icons/pi';
 import ClassesFilter from './ClassesFilter';
 
 export default function StudentsFilters({

@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { HiDotsVertical } from 'react-icons/hi';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
-import { ActionIcon, Button, Text, Title } from 'rizzui';
-import { PiXBold } from 'react-icons/pi';
+import { Button, Text } from 'rizzui';
 import baseUrl from '@/utils/baseUrl';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/ui/spinner';
-import Link from 'next/link';
 
 const StudentList = ({
   studentsToDisplay,

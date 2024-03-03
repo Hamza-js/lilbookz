@@ -66,7 +66,7 @@ function PreviousRegister() {
     } finally {
       setLoadingDates(false);
     }
-  }, []);
+  }, [classid]);
 
   return (
     <div className="@container">

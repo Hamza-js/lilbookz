@@ -1,10 +1,8 @@
 import baseUrl from '@/utils/baseUrl';
 import React, { useEffect, useState } from 'react';
-import { Select } from 'rizzui';
+import { Select, Text } from 'rizzui';
 import { Loader } from '@/components/ui/loader';
-import Spinner from '@/components/ui/spinner';
 import { toast } from 'react-hot-toast';
-import { Text } from 'rizzui';
 
 export default function SelectDate({ dates, classid }) {
   const [value, setValue] = useState(null);
@@ -41,7 +39,7 @@ export default function SelectDate({ dates, classid }) {
 
   useEffect(() => {
     setValue(options.length > 0 ? options[0] : null);
-  }, [dates]);
+  }, [dates, options, classid]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -86,7 +84,7 @@ export default function SelectDate({ dates, classid }) {
     };
 
     fetchData();
-  }, [value, dates]);
+  }, [value, dates, classid]);
 
   // Handle onChange event
   const handleChange = (selectedOption) => {
@@ -214,7 +212,7 @@ export default function SelectDate({ dates, classid }) {
                             : 'bg-emerald-100 text-emerald-700'
                         }`}
                       >
-                        Change Attendance'
+                        Change Attendance
                       </button>
                     </td>
                   </tr>
