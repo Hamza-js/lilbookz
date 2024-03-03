@@ -98,17 +98,6 @@ const ListCanceledStudents = ({ allCancelledStudents }) => {
   return (
     <div>
       <table className="min-w-full divide-y divide-gray-200">
-        <thead className="bg-gray-50">
-          <tr>
-            <th
-              scope="col"
-              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-            >
-              Student Name
-            </th>
-            <th></th>
-          </tr>
-        </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
           {allCancelledStudents.map((student) => (
             <tr key={student.id}>
@@ -123,7 +112,7 @@ const ListCanceledStudents = ({ allCancelledStudents }) => {
               <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                 <button
                   onClick={() => handleIconClick(student)}
-                  className="text-gray-400 hover:text-gray-600"
+                  className="text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
                 >
                   <HiDotsVertical />
                 </button>

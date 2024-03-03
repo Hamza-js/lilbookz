@@ -10,7 +10,7 @@ export default function ClassTypeFilter({
 
   useEffect(() => {
     if (selectedGenre) {
-      console.log('Selected Genre', selectedGenre);
+      // console.log('Selected Genre', selectedGenre);
       const filteredTypes = classTypes.filter(
         (type: any) => type.genre === selectedGenre
       );

@@ -194,7 +194,7 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
         <p>Please a select a class to filter students</p>
       )}
 
-      {selectedStudents.length > 0 && (
+      {selectedStudents.length > 0 && filtersApplied && (
         <div className="flex items-center justify-center gap-5 p-5">
           <Button size="lg" variant="outline" className="flex-shrink-0">
             <Link

@@ -14,6 +14,8 @@ const StudentList = ({
   setShowStudents,
   editorContent,
   subject,
+  setSubject,
+  setEditorContent,
 }) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [selectAll, setSelectAll] = useState(false);
@@ -86,6 +88,8 @@ const StudentList = ({
           setLoading(false);
           toast.success(<Text as="b">Email sent successfully</Text>);
           setShowStudents(false);
+          setSubject('');
+          setEditorContent('');
         })
         .catch((error) => {
           setSelectedStudents([]);

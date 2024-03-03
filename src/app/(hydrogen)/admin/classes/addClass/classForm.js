@@ -6,11 +6,11 @@ import { Select } from 'rizzui';
 
 import FormGroup from '@/app/shared/form-group';
 import FormFooter from '@/components/form-footer';
-import { useState } from 'react';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
-// import TimePicker from 'react-time-picker';
-// import ScrollPicker from 'react-scroll-picker';
+import { useEffect, useRef, useState } from 'react';
+import { Calendar } from 'react-multi-date-picker';
+// import 'react-multi-date-picker/dist/index.css';
+import DatetimePicker from 'react-datetime-picker';
+import 'react-datetime-picker/dist/DateTimePicker.css';
 
 const options = [
   { label: 'Apple 🍎', value: 'apple' },
@@ -49,9 +49,11 @@ const ClassForm = ({ classTypes, classGenres }) => {
   const [type, setType] = useState(null);
   const [day, setDay] = useState(null);
   const [duration, setDuration] = useState(null);
-  const [hours, setHours] = useState('12');
-  const [minutes, setMinutes] = useState('00');
-  const [period, setPeriod] = useState('AM');
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [calendarVisible, setCalendarVisible] = useState(false);
+
+  const calendarRef = useRef(null);
 
   const formatedClassGenres = classGenres.map((genre) => ({
     label: genre.name,
@@ -83,17 +85,32 @@ const ClassForm = ({ classTypes, classGenres }) => {
     setDuration(selectedOption.value);
   };
 
-  const handleHoursChange = (selectedHours) => {
-    setHours(selectedHours);
+  const handleDateChange = (date) => {
+    setSelectedTime(date);
+    console.log(date);
   };
 
-  const handleMinutesChange = (selectedMinutes) => {
-    setMinutes(selectedMinutes);
+  const handleTimeChange = (time) => {
+    setSelectedTime(time);
+    console.log(time);
   };
 
-  const handlePeriodChange = (selectedPeriod) => {
-    setPeriod(selectedPeriod);
+  const toggleCalendar = () => {
+    setCalendarVisible(!calendarVisible);
   };
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+        setCalendarVisible(false);
+      }
+    }
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [calendarRef]);
+
   return (
     <>
       <div className="mx-auto mb-10 grid w-full max-w-screen-2xl gap-7 divide-y divide-dashed divide-gray-200 @2xl:gap-9 @3xl:gap-11">
@@ -132,40 +149,36 @@ const ClassForm = ({ classTypes, classGenres }) => {
             value={duration}
             onChange={handleChangeduration}
           />
-          {/* <DatePicker
-            inputProps={{ label: 'Available date' }}
-            placeholderText="Select Date"
-            dateFormat="dd/MM/yyyy"
-          /> */}
-          {/* <ScrollPicker
-            list={[
-              '01',
-              '02',
-              '03',
-              '04',
-              '05',
-              '06',
-              '07',
-              '08',
-              '09',
-              '10',
-              '11',
-              '12',
-            ]}
-            value={hours}
-            onChange={handleHoursChange}
-          /> */}
-          <span> : </span>
-          {/* <ScrollPicker
-            list={['00', '15', '30', '45']}
-            value={minutes}
-            onChange={handleMinutesChange}
-          />
-          <ScrollPicker
-            list={['AM', 'PM']}
-            value={period}
-            onChange={handlePeriodChange}
-          /> */}
+          <div ref={calendarRef} className="relative">
+            <Input
+              onClick={toggleCalendar}
+              label="Select Dates"
+              value={selectedDates.length > 0 ? selectedDates.join(', ') : ''}
+              readOnly
+              placeholder="You can select multiple dates"
+            />
+            {calendarVisible && (
+              <div className="absolute left-0 top-full z-10 bg-white p-2 shadow-md">
+                <react-datetime-picker
+                  value={selectedDates}
+                  onChange={(dates) => setSelectedDates(dates)}
+                  multiple
+                />
+              </div>
+            )}
+          </div>
+          <div className='w-full'>
+            <p className='text-gray-950 font-medium mb-[6px]'>Select Time</p>
+            <DatetimePicker
+              onChange={handleTimeChange}
+              value={selectedTime}
+              format="hh:mm a"
+              clearIcon={null}
+              calendarIcon={null} // Hides the calendar icon
+              disableCalendar // Disables the calendar
+              className="rounded-md border border-gray-300 px-3 py-[5px] w-full"
+            />
+          </div>
         </FormGroup>
 
         <FormGroup

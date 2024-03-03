@@ -2,11 +2,15 @@ import baseUrl from '@/utils/baseUrl';
 import React, { useEffect, useState } from 'react';
 import { Select } from 'rizzui';
 import { Loader } from '@/components/ui/loader';
+import Spinner from '@/components/ui/spinner';
+import { toast } from 'react-hot-toast';
+import { Text } from 'rizzui';
 
 export default function SelectDate({ dates, classid }) {
   const [value, setValue] = useState(null);
   const [responseData, setResponseData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [loading1, setLoading1] = useState(false);
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -43,7 +47,7 @@ export default function SelectDate({ dates, classid }) {
     const fetchData = async () => {
       try {
         setLoading(true);
-        console.log('Trying to fetch data');
+        // console.log('Trying to fetch data');
         if (dates.length > 0) {
           const loggedInStatusString = localStorage.getItem('loggedInStatus');
           const loggedInStatus = loggedInStatusString
@@ -71,6 +75,7 @@ export default function SelectDate({ dates, classid }) {
             const response = await fetch(url, requestOptions);
             const result = await response.json();
             setResponseData(result.result);
+            console.log(result.result);
           }
         }
       } catch (error) {
@@ -85,8 +90,62 @@ export default function SelectDate({ dates, classid }) {
 
   // Handle onChange event
   const handleChange = (selectedOption) => {
-    console.log(selectedOption);
+    // console.log(selectedOption);
     setValue(selectedOption);
+  };
+
+  const handleAttendanceChange = (item) => {
+    const attendance = item.not_attended === '0' ? '1' : '0';
+    // console.log('value', value.value);
+    // console.log('item', item.id);
+    // console.log('student.not_attended', attendance);
+    const loggedInStatusString = localStorage.getItem('loggedInStatus');
+    const loggedInStatus = loggedInStatusString
+      ? JSON.parse(loggedInStatusString)
+      : false;
+
+    if (loggedInStatus === true) {
+      setLoading1(true);
+      const userDataString = localStorage.getItem('userData');
+      const userData = userDataString ? JSON.parse(userDataString) : null;
+      const storedToken = localStorage.getItem('tokenLilBookz');
+      const parsedToken = JSON.parse(storedToken);
+      const url = `${baseUrl}/api/updateAttendance?customerid=${userData.customerid}`;
+
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${parsedToken.access_token}`);
+
+      const formdata = new FormData();
+      formdata.append('attendance', attendance);
+      formdata.append('classDate', item.id);
+      formdata.append('studentid', attendance);
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow',
+      };
+
+      fetch(url, requestOptions)
+        .then((response) => response.json())
+        .then((result) => {
+          console.log(result);
+          toast.success(
+            <Text as="b">
+              {`Attendance of ${item.child_first_name} ${item.child_last_name} updated successfully`}
+            </Text>
+          );
+          setLoading1(false);
+        })
+        .catch((error) => {
+          toast.error(<Text as="b">Error while updating attendance</Text>);
+          setLoading1(false);
+        });
+    } else {
+      setLoading1(false);
+      toast.error(<Text as="b">Error while updating attendance</Text>);
+    }
   };
 
   const renderTable = () => {
@@ -144,18 +203,18 @@ export default function SelectDate({ dates, classid }) {
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       <button
-                        onClick={() => handleAttendanceChange(item.id)}
+                        onClick={() => handleAttendanceChange(item)}
                         className={`rounded ${
                           item.not_attended === '1'
-                            ? 'bg-red-500'
-                            : 'bg-green-500'
-                        } px-4 py-2 font-bold text-white hover:${
+                            ? 'bg-red-100 text-red-700'
+                            : 'bg-emerald-100 text-emerald-700'
+                        } px-4 py-2 font-semibold hover:${
                           item.not_attended === '1'
-                            ? 'bg-red-700'
-                            : 'bg-green-700'
+                            ? 'bg-red-100 text-red-700'
+                            : 'bg-emerald-100 text-emerald-700'
                         }`}
                       >
-                        Change Attendance
+                        Change Attendance'
                       </button>
                     </td>
                   </tr>

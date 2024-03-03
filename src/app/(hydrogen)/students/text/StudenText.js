@@ -108,6 +108,7 @@ function StudenText() {
               setShowStudents={setShowStudents}
               text={text}
               pushNotification={pushNotification}
+              setText={setText}
             />
           </div>
         </>

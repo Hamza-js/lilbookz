@@ -1,15 +1,11 @@
 'use client';
 
 import PageHeader from '@/app/shared/page-header';
-import StudentsFilters from '@/app/shared/students/student-filters';
+import StudentsFilters from './filterIndex';
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
-import {
-  fetchClassGenres,
-  fetchAllStudents,
-  fetchClassTypes,
-  fetchClasses,
-} from '../current/queries';
+import { fetchAllWaitingStudents } from './queries';
+import { fetchClasses } from '../current/queries';
 import { useQuery } from '@tanstack/react-query';
 import StudentList from './StudentList';
 import { Loader } from '@/components/ui/loader';
@@ -21,7 +17,7 @@ const pageHeader = {
       name: 'Students',
     },
     {
-      name: 'Current',
+      name: 'Waiting',
     },
   ],
 };
@@ -48,28 +44,8 @@ function WaitingList() {
     data: allStudents,
     isFetching: isFetching2,
   } = useQuery({
-    queryKey: ['fetchAllStudents'],
-    queryFn: fetchAllStudents,
-  });
-
-  const {
-    isLoading: isLoading1,
-    error: error1,
-    data: classGenres,
-    isFetching: isFetching1,
-  } = useQuery({
-    queryKey: ['getClassGenres'],
-    queryFn: fetchClassGenres,
-  });
-
-  const {
-    isLoading: isLoading3,
-    error: error3,
-    data: classTypes,
-    isFetching: isFetching3,
-  } = useQuery({
-    queryKey: ['fetchClassTypes'],
-    queryFn: fetchClassTypes,
+    queryKey: ['fetchAllWaitingStudents'],
+    queryFn: fetchAllWaitingStudents,
   });
 
   const {
@@ -85,8 +61,10 @@ function WaitingList() {
   let studentsToDisplay = [];
   if (selectedFilters?.class) {
     studentsToDisplay = allStudents?.filter(
-      (student) => student?.classid === selectedFilters?.class?.value
+      (student) => student?.class_venue === selectedFilters?.class?.value
     );
+  } else {
+    studentsToDisplay = allStudents;
   }
 
   // console.log('filtersApplied', filtersApplied);
@@ -94,7 +72,7 @@ function WaitingList() {
   return (
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
-      {isLoading1 || isLoading2 || isLoading3 || isLoading4 ? (
+      {isLoading2 || isLoading4 ? (
         <div className="flex h-10 items-center justify-center">
           <Loader size="xl" />
         </div>
@@ -102,8 +80,6 @@ function WaitingList() {
         <>
           <StudentsFilters
             className="mb-6"
-            classGenres={classGenres}
-            classTypes={classTypes}
             classes={classes}
             onFiltersChange={setSelectedFilters}
             studentsToDisplay={studentsToDisplay}

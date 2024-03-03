@@ -17,7 +17,7 @@ export default function ClassesFilter({
     // console.log('filteredClasses if', filteredClasses);
 
     formattedClasses = filteredClasses.map((type: any) => ({
-      label: `${type.day} @ ${type.time}, ${type.street}`,
+      label: `${type?.day} @ ${type?.time} - ${type?.bulding_no}, ${type?.street}`,
       value: type.id,
     }));
 

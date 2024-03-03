@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import PageHeader from '@/app/shared/page-header';
 import StudentsFilters from '@/app/shared/students/student-filters';
@@ -92,6 +92,8 @@ function StudentCurrent() {
     studentsToDisplay = allStudents?.filter(
       (student) => student?.classid === selectedFilters?.class?.value
     );
+  } else {
+    studentsToDisplay = allStudents;
   }
 
   return (

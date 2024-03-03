@@ -14,6 +14,7 @@ const StudentList = ({
   setShowStudents,
   text,
   pushNotification,
+  setText,
 }) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [selectAll, setSelectAll] = useState(false);
@@ -86,6 +87,7 @@ const StudentList = ({
           setLoading(false);
           toast.success(<Text as="b">Message sent successfully</Text>);
           setShowStudents(false);
+          setText('');
         })
         .catch((error) => {
           setSelectedStudents([]);

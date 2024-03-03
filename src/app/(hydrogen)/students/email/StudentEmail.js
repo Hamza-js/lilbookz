@@ -106,6 +106,8 @@ function StudentEmail() {
               setShowStudents={setShowStudents}
               subject={subject}
               editorContent={editorContent}
+              setSubject={setSubject}
+              setEditorContent={setEditorContent}
             />
           </div>
         </>
