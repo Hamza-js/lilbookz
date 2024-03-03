@@ -7,6 +7,7 @@ import baseUrl from '@/utils/baseUrl';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/ui/spinner';
 import Link from 'next/link';
+import UsersColorIcon from '@/components/icons/users-color';
 
 const StudentList = ({ studentsToDisplay, filtersApplied }) => {
   const { openDrawer, closeDrawer } = useDrawer();
@@ -169,8 +170,11 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
                       student.membership_paid === '1'
                         ? 'bg-blue-500'
                         : 'bg-purple-500'
-                    } px-3 py-2`}
+                    } px-3 py-2 flex items-center justify-center`}
                   >
+                    {/* {student.membership_paid === '1' ? null : (
+                      <UsersColorIcon />
+                    )} */}
                     {` ${
                       student.membership_paid === '1'
                         ? student.termCount
@@ -181,7 +185,7 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
                 <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                   <button
                     onClick={() => handleIconClick(student)}
-                    className="text-gray-400 hover:text-gray-600"
+                    className="text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
                   >
                     <HiDotsVertical />
                   </button>

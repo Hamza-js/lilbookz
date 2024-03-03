@@ -39,7 +39,7 @@ export default function SelectDate({ dates, classid }) {
 
   useEffect(() => {
     setValue(options.length > 0 ? options[0] : null);
-  }, [dates, options, classid]);
+  }, [dates]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -84,7 +84,7 @@ export default function SelectDate({ dates, classid }) {
     };
 
     fetchData();
-  }, [value, dates, classid]);
+  }, [value]);
 
   // Handle onChange event
   const handleChange = (selectedOption) => {
@@ -94,9 +94,6 @@ export default function SelectDate({ dates, classid }) {
 
   const handleAttendanceChange = (item) => {
     const attendance = item.not_attended === '0' ? '1' : '0';
-    // console.log('value', value.value);
-    // console.log('item', item.id);
-    // console.log('student.not_attended', attendance);
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
       ? JSON.parse(loggedInStatusString)
