@@ -82,7 +82,7 @@ const StudentList = ({
       };
 
       fetch(url, requestOptions)
-        .then((response) => response.text())
+        .then((response) => response.json())
         .then((result) => {
           setSelectedStudents([]);
           setLoading(false);

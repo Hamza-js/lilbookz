@@ -89,12 +89,15 @@ function Classes() {
   return (
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
-      {isLoading1 && isLoading && !isLoading2 ? (
+      {isLoading1 && isLoading && isLoading2 && (
         <div className="flex h-10 items-center justify-center">
           <Loader size="xl" />
         </div>
-      ) : (
-        <ListClasses mergedData={mergedData} />
+      )}
+      {!isLoading1 && !isLoading && !isLoading2 && (
+        <>
+          <ListClasses mergedData={mergedData} setMergedData={setMergedData} />
+        </>
       )}
     </div>
   );

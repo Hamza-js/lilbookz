@@ -33,7 +33,7 @@ export default function FormFooter({
       >
         {altBtnText}
       </Button>
-      <Button type="submit" isLoading={isLoading} className="w-full @xl:w-auto">
+      <Button disabled type="submit" isLoading={isLoading} className="w-full @xl:w-auto">
         {submitBtnText}
       </Button>
     </div>

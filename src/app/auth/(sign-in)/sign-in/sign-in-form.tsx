@@ -18,8 +18,8 @@ import Spinner from '@/components/ui/spinner';
 import { useState } from 'react';
 
 const initialValues: LoginSchema = {
-  email: 'info@lilbeatz.com',
-  password: 'Popabear1',
+  email: '',
+  password: '',
   rememberMe: true,
 };
 

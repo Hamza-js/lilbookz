@@ -31,6 +31,14 @@ function PreviousRegister() {
   const classid = searchParams.get('classid');
 
   useEffect(() => {
+    const storedToken = localStorage.getItem('tokenLilBookz');
+    const parsedToken = JSON.parse(storedToken);
+    if (!parsedToken) {
+      redirect('/auth/sign-in');
+    }
+  }, []);
+
+  useEffect(() => {
     try {
       setLoadingDates(true);
       const loggedInStatusString = localStorage.getItem('loggedInStatus');
