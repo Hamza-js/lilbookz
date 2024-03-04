@@ -1,7 +1,7 @@
 'use client';
 
 import PageHeader from '@/app/shared/page-header';
-import ClassForm from './teacherForm';
+import ShowForm from './showForm';
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
 import {
@@ -65,7 +65,7 @@ function Classes() {
       )}
       {!isLoading1 && !isLoading2 && !isFetching1 && !isFetching2 && (
         <>
-          <ClassForm classGenres={classGenres} classTypes={classTypes} />
+          <ShowForm classGenres={classGenres} classTypes={classTypes} />
         </>
       )}
     </div>
