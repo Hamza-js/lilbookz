@@ -1,41 +1,48 @@
 'use client';
 
 import PageHeader from '@/app/shared/page-header';
-import ShowForm from './showForm';
-import { useEffect } from 'react';
+import CustomerForm from './customerForm';
+import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
 
 const pageHeader = {
-  title: 'Shows',
+  title: 'Customers',
   breadcrumb: [
     {
       name: 'Admin',
     },
     {
-      name: 'Shows',
+      name: 'Customers',
     },
     {
-      name: 'Add Show',
+      name: 'Edit Customer',
     },
   ],
 };
 
-function AddShows() {
+function EditCus() {
+  const [customerData, setCustomerData] = useState(null);
+
   useEffect(() => {
     const storedToken = localStorage.getItem('tokenLilBookz');
     const parsedToken = JSON.parse(storedToken);
+    const customer = localStorage.getItem('cus');
+    const parsedCustomer = customer ? JSON.parse(customer) : null;
+
     if (!parsedToken) {
       redirect('/auth/sign-in');
     }
+
+    setCustomerData(parsedCustomer);
   }, []);
 
   return (
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
 
-      <ShowForm />
+      <CustomerForm customerData={customerData} />
     </div>
   );
 }
 
-export default AddShows;
+export default EditCus;

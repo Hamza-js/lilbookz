@@ -1,21 +1,21 @@
 'use client';
 
 import PageHeader from '@/app/shared/page-header';
-import ShowForm from './showForm';
+import CustomerForm from './customerForm';
 import { useEffect } from 'react';
 import { redirect } from 'next/navigation';
 
 const pageHeader = {
-  title: 'Shows',
+  title: 'Customers',
   breadcrumb: [
     {
       name: 'Admin',
     },
     {
-      name: 'Shows',
+      name: 'Customers',
     },
     {
-      name: 'Add Show',
+      name: 'Add Customer',
     },
   ],
 };
@@ -33,7 +33,7 @@ function AddShows() {
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
 
-      <ShowForm />
+      <CustomerForm />
     </div>
   );
 }

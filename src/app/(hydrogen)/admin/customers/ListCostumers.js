@@ -14,17 +14,34 @@ import {
 } from 'react-icons/fa';
 import baseUrl from '@/utils/baseUrl';
 import toast from 'react-hot-toast';
-import {
-  HiDotsVertical,
-  HiOutlineMail,
-  HiOutlineCalendar,
-} from 'react-icons/hi';
+import { HiDotsVertical } from 'react-icons/hi';
+import { useRouter } from 'next/navigation';
+import { AiOutlineFileText } from 'react-icons/ai';
 
-const ListShows = ({ showsData, setshowsData }) => {
+const ListCostumers = ({ customersData, setcustomesrData }) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
-  const handleDeleteSHow = async (show) => {
+  const handleNavigate = (cus) => {
+    localStorage.setItem('cus_id', cus.id);
+    localStorage.setItem('cus_company_name', cus.company_name);
+    router.push('/admin/customers/sendInvoice');
+  };
+
+  const handleNavigateToInvoices = (cus) => {
+    localStorage.setItem('cus_id', cus.id);
+    localStorage.setItem('cus_company_name', cus.company_name);
+    router.push('/admin/customers/invoices');
+  };
+
+  const handleNavigateToEdit = (cus) => {
+    localStorage.setItem('cus', JSON.stringify(cus));
+    closeDrawer()
+    router.push('/admin/customers/editCustomer');
+  };
+
+  const handleDeleteCustomer = async (customer) => {
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
       ? JSON.parse(loggedInStatusString)
@@ -36,13 +53,13 @@ const ListShows = ({ showsData, setshowsData }) => {
       const userData = userDataString ? JSON.parse(userDataString) : null;
       const storedToken = localStorage.getItem('tokenLilBookz');
       const parsedToken = JSON.parse(storedToken);
-      const url = `${baseUrl}/api/deleteShow?customerid=${userData.customerid}&id=${show.id}`;
+      const url = `${baseUrl}/api/removeAdminCustomer?customerid=${userData.customerid}&id=${customer.id}`;
 
       const myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${parsedToken.access_token}`);
 
       const formdata = new FormData();
-      formdata.append('showid', show.id);
+      formdata.append('showid', customer.id);
       formdata.append('customerid', userData.customerid);
 
       const requestOptions = {
@@ -59,18 +76,18 @@ const ListShows = ({ showsData, setshowsData }) => {
         console.log(result.result);
         closeDrawer();
         if (result.result === 'success') {
-          const updatedShowaData = showsData.filter(
-            (item) => item.id !== show.id
+          const updatedCustomersData = customersData.filter(
+            (item) => item.id !== customer.id
           );
-          setshowsData(updatedShowaData);
+          setcustomesrData(updatedCustomersData);
           toast.success(<Text as="b">Deleted successfully</Text>);
         } else {
-          toast.error(<Text as="b">Error while deleting show</Text>);
+          toast.error(<Text as="b">Error while deleting customer</Text>);
         }
       } catch (error) {
         console.error('Error deleting class:', error);
         closeDrawer();
-        toast.error(<Text as="b">Error deleting show</Text>);
+        toast.error(<Text as="b">Error deleting customer</Text>);
       } finally {
         setLoading(false);
       }
@@ -81,13 +98,13 @@ const ListShows = ({ showsData, setshowsData }) => {
     }
   };
 
-  const handleIconClick = (show) => {
+  const handleIconClick = (customer) => {
     openDrawer({
       view: (
         <div className="relative flex h-full w-full flex-col bg-white px-5 py-3.5 dark:bg-gray-50">
           <div className="-mx-5 mb-6 flex items-center justify-between border-b border-muted px-4 pb-4">
             <Title as="h5" className="font-semibold">
-              {`Options for ${show?.name} `}
+              {`Options for ${customer?.company_name} `}
             </Title>
             <ActionIcon
               size="sm"
@@ -99,7 +116,7 @@ const ListShows = ({ showsData, setshowsData }) => {
             </ActionIcon>
           </div>
           <Button
-            // onClick={() => handleReactivate(student)}
+            onClick={() => handleNavigate(customer)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"
@@ -111,13 +128,31 @@ const ListShows = ({ showsData, setshowsData }) => {
             ) : (
               <div className="flex w-44 items-center gap-2">
                 <FaPaperPlane className="mr-2" />
-                <span>Send Invites</span>
+                <span>Send Invoice</span>
               </div>
             )}
           </Button>
 
           <Button
-            // onClick={() => handleReactivate(student)}
+            onClick={() => handleNavigateToInvoices(customer)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            {loading ? (
+              <div className="m-auto">
+                <Spinner size="sm" className="text-white" />
+              </div>
+            ) : (
+              <div className="flex w-44 items-center gap-2">
+                <AiOutlineFileText className="mr-2" />
+                <span>View Invoices</span>
+              </div>
+            )}
+          </Button>
+
+          <Button
+            onClick={() => handleNavigateToEdit(customer)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"
@@ -129,13 +164,13 @@ const ListShows = ({ showsData, setshowsData }) => {
             ) : (
               <div className="flex w-44 items-center gap-2">
                 <FaEdit className="mr-2" />
-                <span>Edit Show</span>
+                <span>Edit Customer</span>
               </div>
             )}
           </Button>
 
           <Button
-            onClick={() => handleDeleteSHow(show)}
+            onClick={() => handleDeleteCustomer(customer)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"
@@ -143,7 +178,7 @@ const ListShows = ({ showsData, setshowsData }) => {
             {!loading ? (
               <div className="flex w-44 items-center gap-2 text-red-400">
                 <FaTrashAlt className="mr-2" />
-                <span>Remove Show</span>
+                <span>Remove Customer</span>
               </div>
             ) : (
               <div className="m-auto">
@@ -175,19 +210,6 @@ const ListShows = ({ showsData, setshowsData }) => {
     });
   };
 
-  const formatDate = (dateStr) => {
-    const options = {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      hour: 'numeric',
-      minute: 'numeric',
-      hour12: true,
-    };
-    const date = new Date(dateStr);
-    return date.toLocaleString('en-US', options);
-  };
-
   return (
     <div>
       <table className="min-w-full divide-y divide-gray-200">
@@ -197,10 +219,10 @@ const ListShows = ({ showsData, setshowsData }) => {
               scope="col"
               className="px-6 py-3 text-left text-lg font-semibold uppercase tracking-wider text-black"
             >
-              {`${showsData.length} Shows`}
+              {`${customersData.length} Customers`}
             </th>
             <th className="flex items-center justify-end">
-              <Link href="/admin/shows/addShow">
+              <Link href="/admin/customers/addCustomer">
                 <div className="mr-3 mt-[10px] cursor-pointer rounded-full bg-black p-[6px] text-base text-white">
                   <FaPlus />
                 </div>
@@ -209,23 +231,22 @@ const ListShows = ({ showsData, setshowsData }) => {
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
-          {showsData.map((show) => (
-            <tr key={show.id}>
+          {customersData.map((customer) => (
+            <tr key={customer.id}>
               <td className="whitespace-nowrap px-6 py-4">
                 <div className="text-md font-semibold text-gray-800">
-                  {`${show?.name} `}
+                  {`${customer?.company_name} `}
                 </div>
                 <div className="flex text-xs text-gray-500">
-                  {show.building_number}
+                  {`${customer.first_name} ${customer.last_name}`}
                 </div>
                 <div className="mt-1 flex items-center text-xs text-gray-500">
-                  <HiOutlineCalendar className="mr-1 text-lg" />{' '}
-                  {formatDate(show.show_date_time)}
+                  {customer.building_no}
                 </div>
               </td>
               <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
                 <button
-                  onClick={() => handleIconClick(show)}
+                  onClick={() => handleIconClick(customer)}
                   className="text-lg text-gray-500 hover:text-gray-600"
                 >
                   <HiDotsVertical />
@@ -239,4 +260,4 @@ const ListShows = ({ showsData, setshowsData }) => {
   );
 };
 
-export default ListShows;
+export default ListCostumers;
