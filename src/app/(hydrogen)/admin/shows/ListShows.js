@@ -19,12 +19,63 @@ import {
   HiOutlineMail,
   HiOutlineCalendar,
 } from 'react-icons/hi';
+import { useRouter } from 'next/navigation';
 
-const ListShows = ({ showsData, setshowsData }) => {
+const ListShows = ({ showsData, setshowsData, setLoading, loading }) => {
   const { openDrawer, closeDrawer } = useDrawer();
-  const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleSendInvite = async (show) => {
+    closeDrawer();
+    const loggedInStatusString = localStorage.getItem('loggedInStatus');
+    const loggedInStatus = loggedInStatusString
+      ? JSON.parse(loggedInStatusString)
+      : false;
+
+    if (loggedInStatus === true) {
+      setLoading(true);
+      const userDataString = localStorage.getItem('userData');
+      const userData = userDataString ? JSON.parse(userDataString) : null;
+      const storedToken = localStorage.getItem('tokenLilBookz');
+      const parsedToken = JSON.parse(storedToken);
+      const url = `${baseUrl}/api/sendShowInvites?customerid=${userData.customerid}&id=${show.id}`;
+
+      const myHeaders = new Headers();
+      myHeaders.append('Authorization', `Bearer ${parsedToken.access_token}`);
+
+      const formdata = new FormData();
+      formdata.append('showid', show.id);
+      formdata.append('customerid', userData.customerid);
+
+      const requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: formdata,
+        redirect: 'follow',
+      };
+
+      try {
+        const response = await fetch(url, requestOptions);
+        const result = await response.json();
+        if (result.result === 'success') {
+          toast.success(<Text as="b">Invites sent successfully</Text>);
+        } else {
+          toast.error(<Text as="b">Error while sending invites</Text>);
+        }
+      } catch (error) {
+        console.error('Error deleting class:', error);
+        toast.error(<Text as="b">Error sending invites</Text>);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+      toast.error(<Text as="b">Error while sending invites</Text>);
+    }
+  };
 
   const handleDeleteSHow = async (show) => {
+    closeDrawer();
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
       ? JSON.parse(loggedInStatusString)
@@ -57,7 +108,6 @@ const ListShows = ({ showsData, setshowsData }) => {
         const result = await response.json();
 
         console.log(result.result);
-        closeDrawer();
         if (result.result === 'success') {
           const updatedShowaData = showsData.filter(
             (item) => item.id !== show.id
@@ -69,16 +119,20 @@ const ListShows = ({ showsData, setshowsData }) => {
         }
       } catch (error) {
         console.error('Error deleting class:', error);
-        closeDrawer();
         toast.error(<Text as="b">Error deleting show</Text>);
       } finally {
         setLoading(false);
       }
     } else {
-      closeDrawer();
       setLoading(false);
       toast.error(<Text as="b">Error while deleting class</Text>);
     }
+  };
+
+  const handleNavigateToEdit = (show) => {
+    localStorage.setItem('show', JSON.stringify(show));
+    closeDrawer();
+    router.push('/admin/shows/editShow');
   };
 
   const handleIconClick = (show) => {
@@ -99,7 +153,7 @@ const ListShows = ({ showsData, setshowsData }) => {
             </ActionIcon>
           </div>
           <Button
-            // onClick={() => handleReactivate(student)}
+            onClick={() => handleSendInvite(show)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"
@@ -117,7 +171,7 @@ const ListShows = ({ showsData, setshowsData }) => {
           </Button>
 
           <Button
-            // onClick={() => handleReactivate(student)}
+            onClick={() => handleNavigateToEdit(show)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"

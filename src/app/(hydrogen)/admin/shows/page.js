@@ -22,6 +22,7 @@ const pageHeader = {
 
 function Shows() {
   const [showsData, setshowsData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const storedToken = localStorage.getItem('tokenLilBookz');
@@ -50,14 +51,20 @@ function Shows() {
   return (
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
-      {isLoading1 && (
-        <div className="flex h-10 items-center justify-center">
-          <Loader size="xl" />
-        </div>
-      )}
-      {!isLoading1 && (
+      {isLoading1 ||
+        (loading && (
+          <div className="flex h-10 items-center justify-center">
+            <Loader size="xl" />
+          </div>
+        ))}
+      {!isLoading1 && !loading && (
         <>
-          <ListShows showsData={showsData} setshowsData={setshowsData} />
+          <ListShows
+            showsData={showsData}
+            setshowsData={setshowsData}
+            setLoading={setLoading}
+            loading={loading}
+          />
         </>
       )}
     </div>
