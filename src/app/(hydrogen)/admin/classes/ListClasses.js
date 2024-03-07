@@ -8,10 +8,12 @@ import Link from 'next/link';
 import { FaCopy, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import baseUrl from '@/utils/baseUrl';
 import toast from 'react-hot-toast';
+import { useRouter } from 'next/navigation';
 
 const ListClasses = ({ mergedData, setMergedData }) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const handleDeleteClass = async (classItem) => {
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
@@ -69,6 +71,12 @@ const ListClasses = ({ mergedData, setMergedData }) => {
     }
   };
 
+  const handleNavigateToEdit = (classItem) => {
+    localStorage.setItem('class', JSON.stringify(classItem));
+    closeDrawer();
+    router.push('/admin/classes/editClass');
+  };
+
   const handleIconClick = (classItem) => {
     openDrawer({
       view: (
@@ -105,7 +113,7 @@ const ListClasses = ({ mergedData, setMergedData }) => {
           </Button>
 
           <Button
-            // onClick={() => handleReactivate(student)}
+            onClick={() => handleNavigateToEdit(classItem)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"
