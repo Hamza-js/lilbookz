@@ -11,7 +11,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useRouter } from 'next/navigation';
 
-const ClassForm = () => {
+const TeacherEditForm = ({ teacherData }) => {
   const [fname, setfname] = useState(null);
   const [lname, setlname] = useState(null);
   const [email, setEmail] = useState('');
@@ -24,10 +24,17 @@ const ClassForm = () => {
   const router = useRouter();
 
   useEffect(() => {
-    setFieldsFilled(
-      fname && lname && email && phoneNumber && newPassword && bio && image
-    );
-  }, [fname, lname, email, phoneNumber, newPassword, bio, image]);
+    console.log('showData', teacherData);
+    setfname(teacherData?.first_name);
+    setlname(teacherData?.last_name);
+    setEmail(teacherData?.email_address);
+    setPhoneNumber(teacherData?.phone);
+    setBio(teacherData?.bio_description);
+  }, [teacherData]);
+
+  useEffect(() => {
+    setFieldsFilled(fname && lname && email && phoneNumber && bio);
+  }, [fname, lname, email, phoneNumber, bio]);
 
   const handleChangeEmail = (event) => setEmail(event.target.value);
 
@@ -55,7 +62,7 @@ const ClassForm = () => {
         return;
       }
 
-      const url = `${baseUrl}/api/addTeacher?customerid=${userData.customerid}`;
+      const url = `${baseUrl}/api/editTeacher?customerid=${userData.customerid}`;
 
       const myHeaders = new Headers();
       myHeaders.append('Authorization', `Bearer ${parsedToken.access_token}`);
@@ -67,10 +74,11 @@ const ClassForm = () => {
       formdata.append('last_name', lname);
       formdata.append('email_address', email);
       formdata.append('phone', phoneNumber);
-      formdata.append('password', newPassword);
+      formdata.append('new_password', newPassword);
       formdata.append('pages', '');
       formdata.append('bio_description', bio);
       formdata.append('bio_image', image);
+      formdata.append('id', teacherData.id);
 
       const requestOptions = {
         method: 'POST',
@@ -82,25 +90,24 @@ const ClassForm = () => {
       fetch(url, requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          if (result && result.teacherId !== false) {
+          if (result && result.result === 'success') {
             setEmail('');
             setPhoneNumber('');
             setNewPassword('');
             setBio('');
             setImage(null);
             setLoading(false);
+            localStorage.removeItem('teacher');
             router.replace('/admin/teachers');
-            toast.success(<Text as="b">Teacher added successfully</Text>);
-          } else if (result && result.message === 'Email already exists!') {
-            toast.error(<Text as="b">Email already exists!</Text>);
+            toast.success(<Text as="b">Teacher updated successfully</Text>);
           } else {
-            toast.error(<Text as="b">Error while adding teacher</Text>);
+            toast.error(<Text as="b">Error while updating teacher</Text>);
           }
           setLoading(false);
         })
         .catch((error) => {
           setLoading(false);
-          toast.error(<Text as="b">Error while adding teacher</Text>);
+          toast.error(<Text as="b">Error while updating teacher</Text>);
         });
     }
   };
@@ -113,10 +120,12 @@ const ClassForm = () => {
           className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
         >
           <Input
+            value={fname}
             placeholder="Enter first name"
             onChange={(event) => setfname(event.target.value)}
           />
           <Input
+            value={lname}
             placeholder="Enter last name"
             onChange={(event) => setlname(event.target.value)}
           />
@@ -127,12 +136,14 @@ const ClassForm = () => {
           className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
         >
           <Input
+            value={email}
             type="email"
             placeholder="Enter email address"
             onChange={handleChangeEmail}
           />
           <Input
-            // type="tel"
+            value={phoneNumber}
+            type="tel"
             placeholder="Enter phone number"
             onChange={handleChangePhoneNumber}
           />
@@ -143,6 +154,7 @@ const ClassForm = () => {
           className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
         >
           <Input
+            value={newPassword}
             type="password"
             className="col-span-full"
             placeholder="Enter new password"
@@ -155,6 +167,7 @@ const ClassForm = () => {
           className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
         >
           <Textarea
+            value={bio}
             className="col-span-full"
             placeholder="Enter bio description here..."
             onChange={handleChangeBio}
@@ -196,4 +209,4 @@ const ClassForm = () => {
   );
 };
 
-export default ClassForm;
+export default TeacherEditForm;

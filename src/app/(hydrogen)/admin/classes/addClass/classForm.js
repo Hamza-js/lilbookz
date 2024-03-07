@@ -14,6 +14,8 @@ import Spinner from '@/components/ui/spinner';
 import 'react-time-picker/dist/TimePicker.css';
 import 'react-clock/dist/Clock.css';
 import 'react-datetime-picker/dist/DateTimePicker.css';
+import { Router } from 'next/router';
+import { useRouter } from 'next/navigation';
 
 const days = [
   { label: 'Monday', value: 'Monday' },
@@ -59,6 +61,8 @@ const ClassForm = ({ classTypes, classGenres }) => {
   const [time, setTime] = useState('');
   const [fieldsFilled, setFieldsFilled] = useState(false);
   const [loading, setLoading] = useState(false);
+
+  const router = useRouter();
 
   const calendarRef = useRef(null);
 
@@ -209,6 +213,7 @@ const ClassForm = ({ classTypes, classGenres }) => {
             setTime('');
             setLoading(false);
             setLoading(false);
+            router.back()
             toast.success(<Text as="b">Class added successfully</Text>);
           } else {
             toast.error(<Text as="b">Error while adding class</Text>);

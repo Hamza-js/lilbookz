@@ -39,7 +39,6 @@ const ShowEditForm = ({ showData }) => {
   const calendarRef = useRef(null);
 
   useEffect(() => {
-    console.log('showData', showData?.county);
     setSelectedDates([showData?.show_date_time]);
     setName(showData?.name);
     setVenueAddress(showData?.street);
@@ -62,8 +61,7 @@ const ShowEditForm = ({ showData }) => {
         venueCity &&
         venueCountry &&
         buildingNumber &&
-        ticketCapacity &&
-        time
+        ticketCapacity 
     );
   }, [
     selectedDates,
@@ -72,7 +70,7 @@ const ShowEditForm = ({ showData }) => {
     venueCountry,
     buildingNumber,
     ticketCapacity,
-    time,
+    // time,
   ]);
 
   const handleTimeChange = (newTime) => setTime(newTime);
@@ -158,6 +156,7 @@ const ShowEditForm = ({ showData }) => {
             setTicketCapacity('');
             setTime('');
             setLoading(false);
+            localStorage.removeItem('show');
             toast.success(<Text as="b">Show updated successfully</Text>);
             router.back();
           } else {

@@ -133,7 +133,7 @@ const ListClasses = ({ mergedData, setMergedData }) => {
                 <Spinner size="sm" className="text-blue-600" />
               </div>
             ) : (
-              <div className="flex w-36 items-center gap-2">
+              <div className="flex w-36 items-center gap-2 text-red-400">
                 <FaTrashAlt className="mr-2" />
                 <span>Delete Class</span>
               </div>

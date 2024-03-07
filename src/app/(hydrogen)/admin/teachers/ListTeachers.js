@@ -8,10 +8,18 @@ import { FaCopy, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import baseUrl from '@/utils/baseUrl';
 import toast from 'react-hot-toast';
 import { HiDotsVertical, HiOutlineMail } from 'react-icons/hi';
+import { useRouter } from 'next/navigation';
 
 const ListTeachers = ({ teachers, setTeachersData }) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+
+  const handleNavigateToEdit = (teacher) => {
+    localStorage.setItem('teacher', JSON.stringify(teacher));
+    closeDrawer();
+    router.push('/admin/teachers/editTeacher');
+  };
 
   const handleDeleteTeacher = async (teacher) => {
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
@@ -105,7 +113,7 @@ const ListTeachers = ({ teachers, setTeachersData }) => {
           </Button> */}
 
           <Button
-            // onClick={() => handleReactivate(student)}
+            onClick={() => handleNavigateToEdit(teacher)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"
@@ -130,10 +138,10 @@ const ListTeachers = ({ teachers, setTeachersData }) => {
           >
             {loading ? (
               <div className="m-auto">
-                <Spinner size="sm" className="text-blue-600" />
+                <Spinner size="sm" className="text-red-400" />
               </div>
             ) : (
-              <div className="flex w-44 items-center gap-2">
+              <div className="flex w-44 items-center gap-2 text-red-400">
                 <FaTrashAlt className="mr-2" />
                 <span>Remove Teacher</span>
               </div>
@@ -189,8 +197,8 @@ const ListTeachers = ({ teachers, setTeachersData }) => {
                 <div className="text-md font-semibold text-gray-800">
                   {`${teacher?.first_name} ${teacher?.last_name}`}
                 </div>
-                <div className="flex items-center text-xs text-gray-500 mt-1">
-                  <HiOutlineMail className="text-lg text-blue-500 mr-1" />{' '}
+                <div className="mt-1 flex items-center text-xs text-gray-500">
+                  <HiOutlineMail className="mr-1 text-lg text-blue-500" />{' '}
                   {teacher.email_address}
                 </div>
               </td>
