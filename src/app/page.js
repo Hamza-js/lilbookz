@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import React, { useEffect } from 'react';
 import Spinner from '@/components/ui/spinner';
 
-const pagedfd = () => {
+const Pagedfd = () => {
   useEffect(() => {
     const storedToken = localStorage.getItem('tokenLilBookz');
     const parsedToken = JSON.parse(storedToken);
@@ -21,4 +21,4 @@ const pagedfd = () => {
   );
 };
 
-export default pagedfd;
+export default Pagedfd;
