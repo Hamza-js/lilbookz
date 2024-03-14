@@ -16,14 +16,14 @@ export default function ClassTypeFilter({
       );
       setFilteredClassTypes(
         filteredTypes.map((type: any) => ({
-          label: type.name,
+          label: `${type.name} ${type.age_range}`,
           value: type.id,
         }))
       );
     } else {
       setFilteredClassTypes(
         classTypes.map((type: any) => ({
-          label: type.name,
+          label: `${type.name} ${type.age_range}`,
           value: type.id,
         }))
       );

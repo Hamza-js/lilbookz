@@ -71,7 +71,7 @@ export default function StudentsFilters({
       classGenre: value,
     }));
     setFiltersApplied(true);
-    closeDrawer();
+    // closeDrawer();
   };
 
   const handleClassTypeFilterChange = (value: any) => {
@@ -81,7 +81,7 @@ export default function StudentsFilters({
       classType: value,
     }));
     setFiltersApplied(true);
-    closeDrawer();
+    // closeDrawer();
   };
 
   const handleClassFilterChange = (value: any) => {

@@ -1,14 +1,16 @@
 import baseUrl from '@/utils/baseUrl';
 import React, { useEffect, useState } from 'react';
-import { Select, Text } from 'rizzui';
+import { Select, Text, Button } from 'rizzui';
 import { Loader } from '@/components/ui/loader';
 import { toast } from 'react-hot-toast';
+import { useModal } from '@/app/shared/modal-views/use-modal';
 
 export default function SelectDate({ dates, classid }) {
   const [value, setValue] = useState(null);
   const [responseData, setResponseData] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loading1, setLoading1] = useState(false);
+  const { openModal, closeModal } = useModal();
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -93,6 +95,7 @@ export default function SelectDate({ dates, classid }) {
   };
 
   const handleAttendanceChange = (item) => {
+    closeModal()
     const attendance = item.not_attended === '0' ? '1' : '0';
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
@@ -141,6 +144,27 @@ export default function SelectDate({ dates, classid }) {
       setLoading1(false);
       toast.error(<Text as="b">Error while updating attendance</Text>);
     }
+  };
+
+  const handleChangeAttendance = async (item) => {
+    openModal({
+      view: (
+        <div className="w-full max-w-md rounded bg-white p-4 md:p-8">
+          <Text className="mb-4 text-lg font-bold md:text-xl">Confirm</Text>
+          <Text className="mb-4 text-lg md:text-base">
+            {`Are you sure you want to change attendance for ${item.child_first_name} ${item.child_last_name}?`}
+          </Text>
+
+          <div className="mt-5 flex justify-end">
+            <Button onClick={() => closeModal()} className="mr-2">
+              No
+            </Button>
+            <Button onClick={() => handleAttendanceChange(item)}>Yes</Button>
+          </div>
+        </div>
+      ),
+      customSize: '480px',
+    });
   };
 
   const renderTable = () => {
@@ -198,7 +222,7 @@ export default function SelectDate({ dates, classid }) {
                     </td>
                     <td className="whitespace-nowrap px-6 py-4">
                       <button
-                        onClick={() => handleAttendanceChange(item)}
+                        onClick={() => handleChangeAttendance(item)}
                         className={`rounded ${
                           item.not_attended === '1'
                             ? 'bg-red-100 text-red-700'

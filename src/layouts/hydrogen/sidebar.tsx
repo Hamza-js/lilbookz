@@ -14,6 +14,18 @@ import StatusBadge from '@/components/get-status-badge';
 
 export default function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
+
+  const handleSupportClick = () => {
+    const emailAddress = 'support@lilbeatz.com';
+    window.open(`mailto:${emailAddress}`);
+  };
+
+  const handleDocumentsClick = () => {
+    const dropboxLink =
+      'https://www.dropbox.com/scl/fo/2hc0egpzdas9xx3bpv20o/h?rlkey=kyyrvbjhg13ybz4mxow0t6jnp&dl=0';
+    window.open(dropboxLink);
+  };
+
   return (
     <aside
       className={cn(
@@ -23,7 +35,7 @@ export default function Sidebar({ className }: { className?: string }) {
     >
       <div className="sticky top-0 z-40 bg-gray-0/10 px-6 pb-5 pt-5 dark:bg-gray-100/5 2xl:px-8 2xl:pt-6">
         <Link
-          href={'/'}
+          href={'/students/current'}
           aria-label="Site Logo"
           className="bg-red-500 text-gray-800 hover:text-gray-900"
         >
@@ -119,10 +131,16 @@ export default function Sidebar({ className }: { className?: string }) {
                         })}
                       </Collapse>
                     ) : (
-                      <Link
-                        href={item?.href}
+                      <div
+                        onClick={
+                          item.name === 'Support'
+                            ? handleSupportClick
+                            : item.name === 'Documents'
+                              ? handleDocumentsClick
+                              : undefined
+                        }
                         className={cn(
-                          'group relative mx-3 my-0.5 flex items-center justify-between rounded-md px-3 py-2 font-medium capitalize lg:my-1 2xl:mx-5 2xl:my-2',
+                          'group relative mx-3 my-0.5 flex cursor-pointer items-center justify-between rounded-md px-3 py-2 font-medium capitalize lg:my-1 2xl:mx-5 2xl:my-2',
                           isActive
                             ? 'before:top-2/5 text-primary before:absolute before:-start-3 before:block before:h-4/5 before:w-1 before:rounded-ee-md before:rounded-se-md before:bg-primary 2xl:before:-start-5'
                             : 'text-gray-700 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900 dark:text-gray-700/90'
@@ -146,7 +164,7 @@ export default function Sidebar({ className }: { className?: string }) {
                         {/* {item?.badge?.length ? (
                           <StatusBadge status={item?.badge} />
                         ) : null} */}
-                      </Link>
+                      </div>
                     )}
                   </>
                 ) : (

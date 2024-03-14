@@ -4,18 +4,18 @@ import PageHeader from '@/app/shared/page-header';
 import ListCostumersInvoices from './ListCostumersInvoices';
 import { useEffect, useState } from 'react';
 import { redirect } from 'next/navigation';
-import { getCustomersInvoices } from './queries';
+import { getInvoicesData } from './queries';
 import { useQuery } from '@tanstack/react-query';
 import { Loader } from '@/components/ui/loader';
 
 const pageHeader = {
-  title: 'Customers',
+  title: 'Students',
   breadcrumb: [
     {
-      name: 'Admin',
+      name: 'Students',
     },
     {
-      name: 'Customers',
+      name: 'Current',
     },
     {
       name: 'Invoices',
@@ -25,24 +25,18 @@ const pageHeader = {
 
 function Invoices() {
   const [customersInvoicesData, setcustomesrInvoicesData] = useState([]);
-  const [cusId, setCusId] = useState('');
   const [stuId, setStuId] = useState('');
-  const [cusCompanyName, setCompanyName] = useState('');
 
   useEffect(() => {
     const storedToken = localStorage.getItem('tokenLilBookz');
-    const cus_id = localStorage.getItem('cus_id');
     const stu_id = localStorage.getItem('stu_id');
-    const cus_company_name = localStorage.getItem('cus_company_name');
     const parsedToken = JSON.parse(storedToken);
 
     if (!parsedToken) {
       redirect('/auth/sign-in');
     }
-    setCusId(cus_id);
     setStuId(stu_id);
-    setCompanyName(cus_company_name);
-  }, [cusCompanyName, cusId, stuId]);
+  }, [stuId]);
 
   const {
     isLoading: isLoading1,
@@ -50,8 +44,8 @@ function Invoices() {
     data: invoices,
     isFetching: isFetching1,
   } = useQuery({
-    queryKey: ['getCustomersInvoices'],
-    queryFn: getCustomersInvoices,
+    queryKey: ['getInvoicesData'],
+    queryFn: getInvoicesData,
   });
 
   useEffect(() => {
@@ -71,7 +65,6 @@ function Invoices() {
       {!isLoading1 && (
         <>
           <ListCostumersInvoices
-            cusCompanyName={cusCompanyName}
             customersInvoicesData={customersInvoicesData}
             setcustomesrInvoicesData={setcustomesrInvoicesData}
           />

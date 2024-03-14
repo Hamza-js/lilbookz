@@ -16,6 +16,7 @@ const ListClasses = ({ mergedData, setMergedData }) => {
   const router = useRouter();
 
   const handleDeleteClass = async (classItem) => {
+    closeDrawer();
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
       ? JSON.parse(loggedInStatusString)
@@ -46,8 +47,8 @@ const ListClasses = ({ mergedData, setMergedData }) => {
         const response = await fetch(url, requestOptions);
         const result = await response.json();
 
-        console.log(result.result);
-        closeDrawer();
+        // console.log(result.result);
+        
         if (result.result === false) {
           const updatedMergedData = mergedData.filter(
             (item) => item.id !== classItem.id

@@ -2,7 +2,7 @@ import { Metadata } from 'next';
 import whiteLogo from '@public/whiteLogo.png';
 import blackLogo from '@public/blackLogo.png';
 import { LAYOUT_OPTIONS } from '@/config/enums';
-import logoIconImg from '@public/logo-short.svg';
+import logoIconImg from '@public/blackLogo.png';
 import { OpenGraph } from 'next/dist/lib/metadata/types/opengraph-types';
 
 enum MODE {

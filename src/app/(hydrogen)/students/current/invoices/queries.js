@@ -1,6 +1,6 @@
 import baseUrl from '@/utils/baseUrl';
 
-export async function getCustomersInvoices() {
+export async function getInvoicesData() {
   const loggedInStatusString = localStorage.getItem('loggedInStatus');
   const loggedInStatus = loggedInStatusString
     ? JSON.parse(loggedInStatusString)
@@ -8,12 +8,12 @@ export async function getCustomersInvoices() {
 
   if (loggedInStatus === true) {
     const userDataString = localStorage.getItem('userData');
-    const cus_id = localStorage.getItem('cus_id');
+    const stu_id = localStorage.getItem('stu_id');
     const userData = userDataString ? JSON.parse(userDataString) : null;
     const storedToken = localStorage.getItem('tokenLilBookz');
     const parsedToken = JSON.parse(storedToken);
 
-    const url = `${baseUrl}/api/getCustomerInvoiceData?customerid=${userData.customerid}&cusid=${cus_id}`;
+    const url = `${baseUrl}/api/getInvoiceData?customerid=${userData.customerid}&studentid=${stu_id}`;
 
     try {
       const response = await fetch(url, {
@@ -29,7 +29,7 @@ export async function getCustomersInvoices() {
       }
 
       const result = await response.json();
-      localStorage.removeItem('cus_id');
+      // localStorage.removeItem('stu_id');
       return result.result;
     } catch (error) {
       console.error('Error fetching data:', error);

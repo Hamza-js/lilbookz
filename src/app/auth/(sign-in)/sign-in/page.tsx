@@ -14,7 +14,7 @@ export default function SignInPage() {
           Welcome Back! <br /> Sign in with your credentials.
         </>
       }
-      isSignIn
+      // isSignIn
     >
       <SignInForm />
     </AuthWrapperFour>

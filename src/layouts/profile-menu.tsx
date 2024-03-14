@@ -26,7 +26,7 @@ const menuItems = [
   },
 ];
 
-function DropdownMenu() {
+function DropdownMenu({ URL, imageUrl, userEmail }: any) {
   const router = useRouter();
 
   const signOut = () => {
@@ -37,18 +37,16 @@ function DropdownMenu() {
 
     router.replace('/auth/sign-in');
   };
+
   return (
     <div className="w-64 text-left rtl:text-right">
-      <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6">
-        <Avatar
-          src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
-          name="Albert Flores"
-        />
+      <div className="flex items-center border-b border-gray-300 px-6 pb-5 pt-6 overflow-hidden">
+        <Avatar src={URL} name="Albert Flores" />
         <div className="ms-3">
           <Title as="h6" className="font-semibold">
-            Albert Flores
+            {imageUrl.name}
           </Title>
-          <Text className="text-gray-600">flores@doe.io</Text>
+          {/* <Text className="text-gray-600 overflow-hidden">{userEmail}</Text> */}
         </div>
       </div>
       {/* <div className="grid px-3.5 py-3.5 font-medium text-gray-700">
@@ -83,11 +81,23 @@ export default function ProfileMenu({
   avatarClassName?: string;
 }) {
   const [isOpen, setIsOpen] = useState(false);
+  const [imageUrl, setImageUrl]: any = useState(null);
+  const [userEmail, setUserEmail] = useState('');
   const pathname = usePathname();
 
   useEffect(() => {
     setIsOpen(false);
+    const userDataString = localStorage.getItem('userData');
+    const userEmailFromStorage = localStorage.getItem('userEmail');
+    const userData: any = userDataString ? JSON.parse(userDataString) : null;
+    setUserEmail(userEmailFromStorage || '');
+    setImageUrl(userData);
   }, [pathname]);
+
+  let URL = '';
+  if (imageUrl && imageUrl.avatar) {
+    URL = `https://www.lilbookz.co.uk/uploads/mailshots/${imageUrl.avatar}`;
+  }
 
   return (
     <Popover
@@ -104,7 +114,7 @@ export default function ProfileMenu({
           )}
         >
           <Avatar
-            src="https://isomorphic-furyroad.s3.amazonaws.com/public/avatars-blur/avatar-11.webp"
+            src={URL}
             name="John Doe"
             className={cn('!h-9 w-9 sm:!h-10 sm:w-10', avatarClassName)}
           />
@@ -112,7 +122,7 @@ export default function ProfileMenu({
       </Popover.Trigger>
 
       <Popover.Content className="z-[9999] p-0 dark:bg-gray-100 [&>svg]:dark:fill-gray-100">
-        <DropdownMenu />
+        <DropdownMenu imageUrl={imageUrl} URL={URL} userEmail={userEmail} />
       </Popover.Content>
     </Popover>
   );

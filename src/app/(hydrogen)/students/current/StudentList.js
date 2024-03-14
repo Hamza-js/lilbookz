@@ -8,8 +8,37 @@ import { toast } from 'react-hot-toast';
 import Spinner from '@/components/ui/spinner';
 import Link from 'next/link';
 import UsersColorIcon from '@/components/icons/users-color';
+import { MdLocalHospital } from 'react-icons/md';
+import { AiOutlineFileText } from 'react-icons/ai';
+import {
+  FaCamera,
+  FaDollarSign,
+  FaPaperPlane,
+  FaExclamationCircle,
+  FaTimesCircle,
+  FaUserMinus,
+  FaEdit,
+  FaEnvelope,
+  FaFileInvoice,
+  FaLevelUpAlt,
+  FaFileAlt,
+  FaEye,
+} from 'react-icons/fa';
 
-const StudentList = ({ studentsToDisplay, filtersApplied }) => {
+const StudentList = ({
+  studentsToDisplay,
+  filtersApplied,
+  handleUpdatePhotoPermission,
+  handleShowMedical,
+  handleInvoiceClick,
+  handleSendInvoice,
+  handleSendEmail,
+  handleChangeClass,
+  handleCancelMembership,
+  handleAddClass,
+  handleMembershipReminderFunction,
+  handleUpgrade,
+}) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [selectAll, setSelectAll] = useState(false);
   const [selectedStudents, setSelectedStudents] = useState([]);
@@ -107,122 +136,290 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
               <PiXBold className="h-4 w-4" />
             </ActionIcon>
           </div>
+          <Button
+            onClick={() => handleAddClass(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaExclamationCircle className="mr-2" />{' '}
+              {/* Icon for Add to Another Class */}
+              <span>Add to Another Class</span>
+            </div>
+          </Button>
+
+          {/* <Button
+            onClick={() => handleSendInvite(show)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaExclamationCircle className="mr-2" />{' '}
+              <span>Add incident</span>
+            </div>
+          </Button> */}
+
+          <Button
+            onClick={() => handleCancelMembership(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaTimesCircle className="mr-2" /> <span>Cancel Membership</span>
+            </div>
+          </Button>
+
+          <Button
+            onClick={() => handleChangeClass(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaEdit className="mr-2" />
+              <span>Change Class</span>
+            </div>
+          </Button>
+
+          <Button
+            onClick={() => handleSendEmail(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaEnvelope className="mr-2" />
+              <span>Email Student</span>
+            </div>
+          </Button>
+
+          <Button
+            onClick={() => handleMembershipReminderFunction(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaLevelUpAlt className="mr-2" />{' '}
+              {/* Icon for Membership Reminder */}
+              <span>Membership Reminder</span>
+            </div>
+          </Button>
+
+          <Button
+            onClick={() => handleSendInvoice(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaFileInvoice className="mr-2" /> {/* Icon for Send Invoice */}
+              <span>Send Invoice</span>
+            </div>
+          </Button>
+          {student.membership_paid === '0' ? (
+            <Button
+              onClick={() => handleUpgrade(student)}
+              size="lg"
+              variant="outline"
+              className="mb-2 flex items-center"
+            >
+              <div className="flex w-64 items-center gap-2">
+                <FaLevelUpAlt className="mr-2" />{' '}
+                {/* Icon for Upgrade to Member */}
+                <span>Upgrade to member</span>
+              </div>
+            </Button>
+          ) : null}
+
+          <Button
+            onClick={() => handleInvoiceClick(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaFileAlt className="mr-2" />
+              <span>View Invoices</span>
+            </div>
+          </Button>
         </div>
       ),
       placement: 'right',
     });
-    console.log('Icon clicked for student:', student);
   };
 
   return (
-    <div className="overflow-x-auto">
-      {studentsToDisplay && studentsToDisplay.length > 0 ? (
-        <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gray-50">
-            <tr>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-              >
-                <input
-                  type="checkbox"
-                  onChange={toggleSelectAll}
-                  checked={selectAll}
-                />
-              </th>
-              <th
-                scope="col"
-                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
-              >
-                Student Name
-              </th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-gray-200 bg-white">
-            {studentsToDisplay.map((student) => (
-              <tr
-                key={student.id}
-                className={
-                  selectedStudents.includes(student.id) ? 'bg-gray-100' : ''
-                }
-              >
-                <td className="whitespace-nowrap px-6 py-4">
+    <>
+      <div className="overflow-x-auto">
+        {studentsToDisplay && studentsToDisplay.length > 0 ? (
+          <table className="min-w-full divide-y divide-gray-200">
+            <thead className="bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                >
                   <input
                     type="checkbox"
-                    onChange={() => toggleSelectStudent(student.id)}
-                    checked={selectedStudents.includes(student.id)}
+                    onChange={toggleSelectAll}
+                    checked={selectAll}
                   />
-                </td>
+                </th>
+                <th></th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                >
+                  Student Name
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+                >
+                  Parents Name
+                </th>
 
-                <td className="whitespace-nowrap px-6 py-4">
-                  <div>
-                    {student.child_first_name} {student.child_last_name}
-                  </div>
-                  <div className="text-xs text-gray-500">
-                    {student.parent_first_name} {student.parent_last_name}
-                  </div>
-                </td>
-                <td className="mx-auto flex items-center justify-center px-3 py-4 text-white">
-                  <div
-                    className={`rounded-md ${
-                      student.membership_paid === '1'
-                        ? 'bg-blue-500'
-                        : 'bg-purple-500'
-                    } px-3 py-2 flex items-center justify-center`}
-                  >
-                    {/* {student.membership_paid === '1' ? null : (
+                <th></th>
+                <th></th>
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-gray-200 bg-white">
+              {studentsToDisplay.map((student) => (
+                <tr
+                  key={student.id}
+                  className={
+                    selectedStudents.includes(student.id) ? 'bg-gray-100' : ''
+                  }
+                >
+                  <td className="whitespace-nowrap px-6 py-4">
+                    <input
+                      type="checkbox"
+                      onChange={() => toggleSelectStudent(student.id)}
+                      checked={selectedStudents.includes(student.id)}
+                    />
+                  </td>
+
+                  <td className="mx-auto flex items-center justify-center px-3 py-4 text-white">
+                    <div
+                      className={`rounded-md ${
+                        student.membership_paid === '1'
+                          ? 'bg-blue-500'
+                          : 'bg-purple-500'
+                      } flex items-center justify-center px-3 py-2`}
+                    >
+                      {/* {student.membership_paid === '1' ? null : (
                       <UsersColorIcon />
                     )} */}
-                    {` ${
-                      student.membership_paid === '1'
-                        ? student.termCount
-                        : student.attendanceCount
-                    } `}
-                  </div>
-                </td>
-                <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
-                  <button
-                    onClick={() => handleIconClick(student)}
-                    className="text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
-                  >
-                    <HiDotsVertical />
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <p>Please a select a class to filter students</p>
-      )}
+                      {` ${
+                        student.membership_paid === '1'
+                          ? student.termCount
+                          : student.attendanceCount
+                      } `}
+                    </div>
+                  </td>
 
-      {selectedStudents.length > 0 && filtersApplied && (
-        <div className="flex items-center justify-center gap-5 p-5">
-          <Button size="lg" variant="outline" className="flex-shrink-0">
-            <Link
-              href={`/students/previousRegister?classid=${studentsToDisplay[0].classid}`}
+                  <td className="whitespace-nowrap px-6 py-4">
+                    <div>
+                      {student.child_first_name} {student.child_last_name}
+                    </div>
+                  </td>
+                  <td className="whitespace-nowrap px-6 py-4">
+                    <div>
+                      {student.parent_first_name} {student.parent_last_name}
+                    </div>
+                  </td>
+
+                  {student.medical_details !== '' ? (
+                    <td className="text-md whitespace-nowrap px-6 py-4 text-right font-medium">
+                      <button
+                        onClick={() => handleShowMedical(student)}
+                        className="text-lg text-red-500 hover:text-red-900 focus:outline-none"
+                      >
+                        <MdLocalHospital />
+                      </button>
+                    </td>
+                  ) : (
+                    <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                      <p></p>
+                    </td>
+                  )}
+
+                  {student.unpaidInvoiceCount !== '0' ? (
+                    <td className="text-md whitespace-nowrap px-6 py-4 text-right font-medium">
+                      <button
+                        onClick={() => handleInvoiceClick(student)}
+                        className="text-lg text-orange-500 hover:text-orange-900 focus:outline-none"
+                      >
+                        <FaDollarSign />
+                      </button>
+                    </td>
+                  ) : (
+                    <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                      <p></p>
+                    </td>
+                  )}
+
+                  <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                    <button
+                      onClick={() => handleUpdatePhotoPermission(student)}
+                      className={`text-lg  focus:outline-none ${
+                        student.photo_permission == '1'
+                          ? 'text-green-400 hover:text-green-900'
+                          : 'text-red-400 hover:text-red-900'
+                      }`}
+                    >
+                      <FaCamera />
+                    </button>
+                  </td>
+
+                  <td className="whitespace-nowrap px-6 py-4 text-right text-sm font-medium">
+                    <button
+                      onClick={() => handleIconClick(student)}
+                      className="text-lg text-gray-500 hover:text-gray-600 focus:outline-none"
+                    >
+                      <HiDotsVertical />
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p>Please a select a class to filter students</p>
+        )}
+
+        {selectedStudents.length > 0 && filtersApplied && (
+          <div className="flex items-center justify-center gap-5 p-5">
+            <Button size="lg" variant="outline" className="flex-shrink-0">
+              <Link
+                href={`/students/previousRegister?classid=${studentsToDisplay[0].classid}`}
+              >
+                Previous Register
+              </Link>
+            </Button>
+            <Button
+              size="lg"
+              onClick={handleRegistration}
+              className="flex-shrink-0"
             >
-              Previous Register
-            </Link>
-          </Button>
-          <Button
-            size="lg"
-            onClick={handleRegistration}
-            className="flex-shrink-0"
-          >
-            {loading ? (
-              <div className="m-auto">
-                <Spinner size="sm" className="text-white" />
-              </div>
-            ) : (
-              'Submit Register'
-            )}
-          </Button>
-        </div>
-      )}
-    </div>
+              {loading ? (
+                <div className="m-auto">
+                  <Spinner size="sm" className="text-white" />
+                </div>
+              ) : (
+                'Submit Register'
+              )}
+            </Button>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 
