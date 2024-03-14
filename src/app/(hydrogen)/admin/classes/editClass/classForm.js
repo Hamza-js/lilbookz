@@ -1,13 +1,12 @@
 'use client';
 
 import { Input } from '@/components/ui/input';
-import { Select } from 'rizzui';
 import FormGroup from '@/app/shared/form-group';
 import { useEffect, useRef, useState } from 'react';
 import { Calendar } from 'react-multi-date-picker';
 import TimePicker from 'react-time-picker';
 import { Button } from '@/components/ui/button';
-import { Text, Title } from 'rizzui';
+import { Text, Select } from 'rizzui';
 import baseUrl from '@/utils/baseUrl';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/ui/spinner';
