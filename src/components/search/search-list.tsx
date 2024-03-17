@@ -1,6 +1,6 @@
 'use client';
 
-import { Fragment, useEffect, useRef, useState } from 'react';
+import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { Input } from '@/components/ui/input';
 import { Title } from '@/components/ui/text';
@@ -14,19 +14,29 @@ import {
 } from 'react-icons/pi';
 import cn from '@/utils/class-names';
 import { pageLinks } from './page-links.data';
+import { FaUser } from 'react-icons/fa';
+import { useRouter, useSearchParams } from 'next/navigation';
 
-export default function SearchList({ onClose }: { onClose?: () => void }) {
+export default function SearchList({
+  onClose,
+  allStudents,
+}: {
+  onClose?: () => void;
+  allStudents: any;
+}) {
   const inputRef = useRef(null);
   const [searchText, setSearchText] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  let menuItemsFiltered = pageLinks;
+  let studentFiltered = allStudents;
   if (searchText.length > 0) {
-    menuItemsFiltered = pageLinks.filter((item: any) => {
-      const label = item.name;
-      return (
-        label.match(searchText.toLowerCase()) ||
-        (label.toLowerCase().match(searchText.toLowerCase()) && label)
-      );
+    console.log(searchText);
+    studentFiltered = allStudents.filter((item: any) => {
+      const studentFullName =
+        `${item.child_first_name} ${item.child_last_name}`.toLowerCase();
+      const searchString = searchText.toLowerCase();
+      return studentFullName.includes(searchString);
     });
   }
 
@@ -40,6 +50,16 @@ export default function SearchList({ onClose }: { onClose?: () => void }) {
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const createQueryString = useCallback(
+    (name: string, value: string) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set(name, value);
+
+      return params.toString();
+    },
+    [searchParams]
+  );
 
   return (
     <>
@@ -82,11 +102,11 @@ export default function SearchList({ onClose }: { onClose?: () => void }) {
 
       <div className="custom-scrollbar max-h-[60vh] overflow-y-auto border-t border-gray-300 px-2 py-4">
         <>
-          {menuItemsFiltered.length === 0 ? (
+          {studentFiltered?.length === 0 ? (
             <Empty
               className="scale-75"
               image={<SearchNotFoundIcon />}
-              text="No Result Found"
+              text="No student Found"
               textClassName="text-xl"
             />
           ) : (
@@ -94,46 +114,43 @@ export default function SearchList({ onClose }: { onClose?: () => void }) {
               as="h6"
               className="mb-5 px-3 font-semibold dark:text-gray-700"
             >
-              Quick Page Links
+              All Students
             </Title>
           )}
         </>
 
-        {menuItemsFiltered.map((item, index) => {
-          return (
-            <Fragment key={item.name + '-' + index}>
-              {item?.href ? (
-                <Link
-                  href={item?.href as string}
+        {studentFiltered &&
+          studentFiltered?.length > 1 &&
+          studentFiltered.map((item: any, index: any): any => {
+            return (
+              <Fragment key={item.id + '-' + index}>
+                <div
+                  onClick={() => {
+                    onClose?.();
+                    router.push(
+                      '/students/current' +
+                        '?' +
+                        createQueryString('id', item.id)
+                    );
+                  }}
                   className="relative my-0.5 flex items-center rounded-lg px-3 py-2 text-sm hover:bg-gray-100 focus:outline-none focus-visible:bg-gray-100 dark:hover:bg-gray-50/50 dark:hover:backdrop-blur-lg"
                 >
-                  <span className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-gray-500">
-                    <PiFileTextDuotone className="h-5 w-5" />
+                  <span className="inline-flex items-center justify-center rounded-md border border-gray-300 p-2 text-gray-400">
+                    <FaUser className="h-5 w-5" />
                   </span>
 
                   <span className="ms-3 grid gap-0.5">
                     <span className="font-medium capitalize text-gray-900 dark:text-gray-700">
-                      {item.name}
+                      {item.child_first_name + ' ' + item.child_last_name}
                     </span>
                     <span className="text-gray-500">
-                      {item?.href as string}
+                      {item.parent_first_name + ' ' + item.parent_last_name}
                     </span>
                   </span>
-                </Link>
-              ) : (
-                <Title
-                  as="h6"
-                  className={cn(
-                    'mb-1 px-3 text-xs font-semibold uppercase tracking-widest text-gray-500 dark:text-gray-500',
-                    index !== 0 && 'mt-6 4xl:mt-7'
-                  )}
-                >
-                  {item.name}
-                </Title>
-              )}
-            </Fragment>
-          );
-        })}
+                </div>
+              </Fragment>
+            );
+          })}
       </div>
     </>
   );

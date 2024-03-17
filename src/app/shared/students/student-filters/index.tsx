@@ -108,7 +108,7 @@ export default function StudentsFilters({
   return (
     <div className={cn('flex items-center justify-between gap-3', className)}>
       <div className="relative flex flex-grow items-center gap-3">
-        <h3>{studentsToDisplay.length} Students</h3>
+        <h3>{studentsToDisplay?.length} Students</h3>
       </div>
       <div>
         {filtersApplied && (

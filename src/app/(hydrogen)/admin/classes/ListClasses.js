@@ -48,7 +48,7 @@ const ListClasses = ({ mergedData, setMergedData }) => {
         const result = await response.json();
 
         // console.log(result.result);
-        
+
         if (result.result === false) {
           const updatedMergedData = mergedData.filter(
             (item) => item.id !== classItem.id
@@ -182,6 +182,14 @@ const ListClasses = ({ mergedData, setMergedData }) => {
             >
               {`${mergedData.length} Classes`}
             </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-lg font-semibold uppercase tracking-wider text-black"
+            ></th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-lg font-semibold uppercase tracking-wider text-black"
+            ></th>
             <th className="flex items-center justify-end">
               <Link href="/admin/classes/addClass">
                 <div className="mr-3 mt-[10px] cursor-pointer rounded-full bg-black p-[6px] text-base text-white">
@@ -189,6 +197,28 @@ const ListClasses = ({ mergedData, setMergedData }) => {
                 </div>
               </Link>
             </th>
+          </tr>
+          <tr>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+            >
+              Type
+            </th>
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+            >
+              Address
+            </th>
+
+            <th
+              scope="col"
+              className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+            >
+              Date/Time
+            </th>
+            <th></th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">
@@ -198,9 +228,15 @@ const ListClasses = ({ mergedData, setMergedData }) => {
                 <div className="text-md font-semibold text-gray-800">
                   {classItem?.type?.name}
                 </div>
+              </td>
+              <td className="whitespace-nowrap px-6 py-4">
                 <div className="text-xs text-gray-500">
                   {classItem.bulding_no}
                 </div>
+                <div className="text-xs text-gray-500">{classItem.street}</div>
+                <div className="text-xs text-gray-500">{classItem.town}</div>
+              </td>
+              <td className="whitespace-nowrap px-6 py-4">
                 <div className="text-xs text-gray-500">
                   {`${classItem.day} @ ${classItem.time}`}
                 </div>

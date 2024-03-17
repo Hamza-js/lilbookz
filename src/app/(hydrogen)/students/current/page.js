@@ -6,9 +6,9 @@ import { useEffect, useState } from 'react';
 import { redirect, useRouter } from 'next/navigation';
 import {
   fetchClassGenres,
-  fetchAllStudents,
   fetchClassTypes,
   fetchClasses,
+  fetchAllStudents,
 } from './queries';
 import { useQuery } from '@tanstack/react-query';
 import StudentList from './StudentList';
@@ -18,6 +18,7 @@ import { Button, Text } from 'rizzui';
 import baseUrl from '@/utils/baseUrl';
 import { toast } from 'react-hot-toast';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
+import { useSearchParams } from 'next/navigation';
 
 const pageHeader = {
   title: 'Students',
@@ -35,6 +36,7 @@ function StudentCurrent() {
   const [filtersApplied, setFiltersApplied] = useState(false);
   const [selecteddClass, setSelectedClass] = useState('');
   const [selectedClass, setSelectClass] = useState('');
+  const [toastDisplayed, setToastDisplayed] = useState(false);
   const [plan, setPlan] = useState('');
   const [selectedClasses, setSelectedClasses] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
@@ -45,8 +47,10 @@ function StudentCurrent() {
 
   const { openModal, closeModal } = useModal();
   const { openDrawer, closeDrawer } = useDrawer();
-
+  const searchParams = useSearchParams();
+  const stu_search_id = searchParams.get('id');
   const router = useRouter();
+
   useEffect(() => {
     const storedToken = localStorage.getItem('tokenLilBookz');
     const parsedToken = JSON.parse(storedToken);
@@ -62,7 +66,8 @@ function StudentCurrent() {
     isFetching: isFetching1,
   } = useQuery({
     queryKey: ['getClassGenres'],
-    queryFn: fetchClassGenres,
+    queryFn: () => fetchClassGenres(router),
+    retry: false,
   });
 
   const {
@@ -72,7 +77,8 @@ function StudentCurrent() {
     isFetching: isFetching2,
   } = useQuery({
     queryKey: ['fetchClassTypes'],
-    queryFn: fetchClassTypes,
+    queryFn: () => fetchClassTypes(router),
+    retry: false,
   });
 
   const {
@@ -82,7 +88,8 @@ function StudentCurrent() {
     isFetching: isFetching3,
   } = useQuery({
     queryKey: ['fetchClasses'],
-    queryFn: fetchClasses,
+    queryFn: () => fetchClasses(router),
+    retry: false,
   });
 
   const {
@@ -92,18 +99,26 @@ function StudentCurrent() {
     isFetching: isFetching4,
   } = useQuery({
     queryKey: ['fetchAllStudents'],
-    queryFn: fetchAllStudents,
+    queryFn: () => fetchAllStudents(router),
+    retry: false,
   });
 
   const handleFiltersChange = (filters) => {
     setSelectedFilters(filters);
     setFiltersApplied(true);
+    if (stu_search_id) {
+      router.push('/students/current');
+    }
   };
 
   let studentsToDisplay = [];
   if (selectedFilters?.class) {
     studentsToDisplay = allStudents?.filter(
       (student) => student?.classid === selectedFilters?.class?.value
+    );
+  } else if (stu_search_id) {
+    studentsToDisplay = allStudents?.filter(
+      (student) => student?.id === stu_search_id
     );
   } else {
     studentsToDisplay = allStudents;
@@ -152,7 +167,9 @@ function StudentCurrent() {
         }
 
         const result = await response.json();
-        toast.success(<Text as="b">Photo permission updated successfully</Text>);
+        toast.success(
+          <Text as="b">Photo permission updated successfully</Text>
+        );
         // console.log('Registered', result);
       } catch (error) {
         toast.error(<Text as="b">Error while Registering</Text>);

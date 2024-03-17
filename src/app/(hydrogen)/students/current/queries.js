@@ -1,6 +1,11 @@
-import baseUrl from '@/utils/baseUrl';
+'use client';
 
-export async function fetchAllStudents() {
+import baseUrl from '@/utils/baseUrl';
+import { toast } from 'react-hot-toast';
+import { Text } from 'rizzui';
+import { redirect } from 'next/navigation';
+
+export async function fetchAllStudents(router) {
   const loggedInStatusString = localStorage.getItem('loggedInStatus');
   const loggedInStatus = loggedInStatusString
     ? JSON.parse(loggedInStatusString)
@@ -22,6 +27,12 @@ export async function fetchAllStudents() {
         },
       });
 
+      if (response.status === 401) {
+        localStorage.setItem('session', false);
+        router.push('/auth/sign-in');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -38,7 +49,7 @@ export async function fetchAllStudents() {
   }
 }
 
-export async function fetchClassGenres() {
+export async function fetchClassGenres(router) {
   const loggedInStatusString = localStorage.getItem('loggedInStatus');
   const loggedInStatus = loggedInStatusString
     ? JSON.parse(loggedInStatusString)
@@ -59,6 +70,12 @@ export async function fetchClassGenres() {
         },
       });
 
+      if (response.status === 401) {
+        localStorage.setItem('session', false);
+        router.push('/auth/sign-in');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -75,7 +92,7 @@ export async function fetchClassGenres() {
   }
 }
 
-export async function fetchClassTypes() {
+export async function fetchClassTypes(router) {
   const loggedInStatusString = localStorage.getItem('loggedInStatus');
   const loggedInStatus = loggedInStatusString
     ? JSON.parse(loggedInStatusString)
@@ -96,6 +113,12 @@ export async function fetchClassTypes() {
         },
       });
 
+      if (response.status === 401) {
+        localStorage.setItem('session', false);
+        router.push('/auth/sign-in');
+        return;
+      }
+
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -112,7 +135,7 @@ export async function fetchClassTypes() {
   }
 }
 
-export async function fetchClasses() {
+export async function fetchClasses(router) {
   const loggedInStatusString = localStorage.getItem('loggedInStatus');
   const loggedInStatus = loggedInStatusString
     ? JSON.parse(loggedInStatusString)
@@ -134,6 +157,12 @@ export async function fetchClasses() {
           'Content-Type': 'application/json',
         },
       });
+
+      if (response.status === 401) {
+        localStorage.setItem('session', false);
+        router.push('/auth/sign-in');
+        return;
+      }
 
       if (!response.ok) {
         throw new Error('Network response was not ok');

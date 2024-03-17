@@ -15,7 +15,7 @@ import baseUrl from '@/utils/baseUrl';
 import { useRouter } from 'next/navigation';
 import { toast } from 'react-hot-toast';
 import Spinner from '@/components/ui/spinner';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const initialValues: LoginSchema = {
   email: '',
@@ -27,6 +27,17 @@ export default function SignInForm() {
   const isMedium = useMedia('(max-width: 1200px)', false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const [toastDisplayed, setToastDisplayed] = useState(false);
+
+  // useEffect(() => {
+  //   const session = localStorage.getItem('session');
+  //   if (session && session === 'false' && !toastDisplayed) {
+  //     toast.error(
+  //       <Text as="b">Your session has expired, please login again!</Text>
+  //     );
+  //     setToastDisplayed(true);
+  //   }
+  // }, []);
 
   const onSubmit: SubmitHandler<LoginSchema> = async (data) => {
     try {
@@ -81,9 +92,9 @@ export default function SignInForm() {
       const response = await axios.post(`${baseUrl}/api/token.php`, data, {
         headers,
       });
-
+      localStorage.removeItem('session');
       localStorage.setItem('tokenLilBookz', JSON.stringify(response.data));
-      router.replace('/');
+      router.replace('/students/current');
     } catch (error: any) {
       toast.error(
         <Text as="b">{error.error_description || 'Token request failed.'}</Text>
