@@ -13,6 +13,7 @@ const ListCanceledStudents = ({ allCancelledStudents }) => {
   const [loading, setLoading] = useState(false);
 
   const handleReactivate = async (student) => {
+    closeDrawer()
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
       ? JSON.parse(loggedInStatusString)
@@ -49,7 +50,7 @@ const ListCanceledStudents = ({ allCancelledStudents }) => {
           setLoading(false);
         })
         .catch((error) => {
-          closeDrawer();
+          // closeDrawer();
           toast.error(<Text as="b">Error while reactivating</Text>);
           setLoading(false);
         });
@@ -113,7 +114,7 @@ const ListCanceledStudents = ({ allCancelledStudents }) => {
               Parents Name
             </th>
 
-            {/* <th></th> */}
+            <th></th>
           </tr>
         </thead>
         <tbody className="divide-y divide-gray-200 bg-white">

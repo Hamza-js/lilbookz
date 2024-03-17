@@ -78,6 +78,36 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
     <div className="overflow-x-auto">
       {studentsToDisplay && studentsToDisplay.length > 0 ? (
         <table className="min-w-full divide-y divide-gray-200">
+          <thead className="bg-gray-50">
+            <tr>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+              >
+                Student Name
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+              >
+                Type
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+              >
+                Address
+              </th>
+              <th
+                scope="col"
+                className="px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-500"
+              >
+                Date/Time
+              </th>
+
+              <th></th>
+            </tr>
+          </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
             {studentsToDisplay.map((student) => (
               <tr key={student.id}>
@@ -85,12 +115,19 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
                   <div className="text-md font-semibold text-gray-800">
                     {`${student?.child_first_name} ${student?.child_last_name}`}
                   </div>
+                </td>
+                <td className="whitespace-nowrap px-6 py-4">
                   <div className="text-xs text-gray-500">
                     {`${student?.class_type_name} ${student?.age_range}`}
                   </div>
+                </td>
+                <td className="whitespace-nowrap px-6 py-4">
                   <div className="text-xs text-gray-500">
                     {student?.bulding_no}
                   </div>
+                  <div className="text-xs text-gray-500">{student?.steet}</div>
+                </td>
+                <td className="whitespace-nowrap px-6 py-4">
                   <div className="text-xs text-gray-500">
                     {`${student.day} @ ${student.time}`}
                   </div>

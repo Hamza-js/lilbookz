@@ -35,7 +35,7 @@ function StudentCancelled() {
     data: allCancelledStudents,
     isFetching: isFetching,
   } = useQuery({
-    queryKey: ['fetchAllStudents'],
+    queryKey: ['fetchAllCancelledStudents'],
     queryFn: fetchAllCancelledStudents,
   });
 
