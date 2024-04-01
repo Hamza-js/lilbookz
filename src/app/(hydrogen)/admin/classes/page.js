@@ -3,11 +3,14 @@
 import PageHeader from '@/app/shared/page-header';
 import ListClasses from './ListClasses';
 import { useEffect, useState } from 'react';
-import { redirect } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 import { getFranchiseClasses, getClasses } from './queries';
 import { fetchClassTypes } from '../../students/current/queries';
 import { useQuery } from '@tanstack/react-query';
 import { Loader } from '@/components/ui/loader';
+import { useModal } from '@/app/shared/modal-views/use-modal';
+import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
+import DuplicateModalView from './DuplicateModalViewComp';
 
 const pageHeader = {
   title: 'Classes',
@@ -23,6 +26,10 @@ const pageHeader = {
 
 function Classes() {
   const [mergedData, setMergedData] = useState([]);
+  const { openModal, closeModal } = useModal();
+  const { openDrawer, closeDrawer } = useDrawer();
+  const router = useRouter();
+
   useEffect(() => {
     const storedToken = localStorage.getItem('tokenLilBookz');
     const parsedToken = JSON.parse(storedToken);
@@ -79,12 +86,27 @@ function Classes() {
         return mergedFcData;
       });
       setMergedData(mergedDataWithTypes);
-
+      localStorage.setItem('classDates', JSON.stringify(franchiseClassesData.dates));
       // console.log('mergedDataWithTypes', mergedDataWithTypes);
     }
   }, [franchiseClassesData, isLoading1, isLoading2, isLoading, classTypes]);
 
   // console.log('mergedData', mergedData);
+
+  const handleDuplicate = (classItem) => {
+    closeDrawer();
+
+    openModal({
+      view: (
+        <DuplicateModalView
+          classItem={classItem}
+          closeModal={closeModal}
+          openModal={openModal}
+        />
+      ),
+      customSize: '480px',
+    });
+  };
 
   return (
     <div className="@container">
@@ -96,7 +118,11 @@ function Classes() {
       )}
       {!isLoading1 && !isLoading && !isLoading2 && (
         <>
-          <ListClasses mergedData={mergedData} setMergedData={setMergedData} />
+          <ListClasses
+            mergedData={mergedData}
+            setMergedData={setMergedData}
+            handleDuplicate={handleDuplicate}
+          />
         </>
       )}
     </div>

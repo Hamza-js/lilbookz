@@ -1,3 +1,5 @@
+'use client';
+
 import { HiDotsVertical } from 'react-icons/hi';
 import React, { useState } from 'react';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
@@ -9,11 +11,16 @@ import { FaCopy, FaEdit, FaTrashAlt, FaPlus } from 'react-icons/fa';
 import baseUrl from '@/utils/baseUrl';
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
+import AddTermView from './AddTermView';
+import { useModal } from '@/app/shared/modal-views/use-modal';
+import EditTermView from './EditTermView';
+import EditTermModelView from './EditTermModelView';
 
-const ListClasses = ({ mergedData, setMergedData }) => {
+const ListClasses = ({ mergedData, setMergedData, handleDuplicate }) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const { openModal, closeModal } = useModal();
 
   const handleDeleteClass = async (classItem) => {
     closeDrawer();
@@ -78,7 +85,43 @@ const ListClasses = ({ mergedData, setMergedData }) => {
     router.push('/admin/classes/editClass');
   };
 
+  const handleAddTerm = (classItem) => {
+    closeDrawer();
+    openModal({
+      view: (
+        <AddTermView
+          classItem={classItem}
+          closeModal={closeModal}
+          openModal={openModal}
+        />
+      ),
+      customSize: '480px',
+    });
+  };
+
+  const handleEditTerm = (classItem, filteredClassDates, classDatesData) => {
+    localStorage.setItem('class', JSON.stringify(classItem));
+    closeDrawer();
+    openModal({
+      view: (
+        <EditTermModelView
+          classItem={classItem}
+          closeModal={closeModal}
+          openModal={openModal}
+          filteredClassDates={filteredClassDates}
+          classDatesData={classDatesData}
+        />
+      ),
+      customSize: '480px',
+    });
+  };
+
   const handleIconClick = (classItem) => {
+    const classDates = localStorage.getItem('classDates');
+    const classDatesData = classDates ? JSON.parse(classDates) : [];
+    const filteredClassDates = classDatesData.filter(
+      (d) => d.classid === classItem.id
+    );
     openDrawer({
       view: (
         <div className="relative flex h-full w-full flex-col bg-white px-5 py-3.5 dark:bg-gray-50">
@@ -96,21 +139,15 @@ const ListClasses = ({ mergedData, setMergedData }) => {
             </ActionIcon>
           </div>
           <Button
-            // onClick={() => handleReactivate(student)}
+            onClick={() => handleDuplicate(classItem)}
             size="lg"
             variant="outline"
             className="mb-2 flex items-center"
           >
-            {loading ? (
-              <div className="m-auto">
-                <Spinner size="sm" className="text-white" />
-              </div>
-            ) : (
-              <div className="flex w-36 items-center gap-2">
-                <FaCopy className="mr-2" />
-                <span>Duplicate</span>
-              </div>
-            )}
+            <div className="flex w-36 items-center gap-2">
+              <FaCopy className="mr-2" />
+              <span>Duplicate</span>
+            </div>
           </Button>
 
           <Button
@@ -132,6 +169,46 @@ const ListClasses = ({ mergedData, setMergedData }) => {
           </Button>
 
           <Button
+            onClick={() => handleAddTerm(classItem)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            {loading ? (
+              <div className="m-auto">
+                <Spinner size="sm" className="text-white" />
+              </div>
+            ) : (
+              <div className="flex w-36 items-center gap-2">
+                <FaPlus className="mr-2" />
+                <span>Add Term</span>
+              </div>
+            )}
+          </Button>
+
+          {filteredClassDates && filteredClassDates.length > 0 && (
+            <Button
+              onClick={() =>
+                handleEditTerm(classItem, filteredClassDates, classDatesData)
+              }
+              size="lg"
+              variant="outline"
+              className="mb-2 flex items-center"
+            >
+              {loading ? (
+                <div className="m-auto">
+                  <Spinner size="sm" className="text-white" />
+                </div>
+              ) : (
+                <div className="flex w-36 items-center gap-2">
+                  <FaEdit className="mr-2" />
+                  <span>Edit Term</span>
+                </div>
+              )}
+            </Button>
+          )}
+
+          <Button
             onClick={() => handleDeleteClass(classItem)}
             size="lg"
             variant="outline"
@@ -145,24 +222,6 @@ const ListClasses = ({ mergedData, setMergedData }) => {
               <div className="flex w-36 items-center gap-2 text-red-400">
                 <FaTrashAlt className="mr-2" />
                 <span>Delete Class</span>
-              </div>
-            )}
-          </Button>
-
-          <Button
-            // onClick={() => handleReactivate(student)}
-            size="lg"
-            variant="outline"
-            className="mb-2 flex items-center"
-          >
-            {loading ? (
-              <div className="m-auto">
-                <Spinner size="sm" className="text-white" />
-              </div>
-            ) : (
-              <div className="flex w-36 items-center gap-2">
-                <FaPlus className="mr-2" />
-                <span>Add Term</span>
               </div>
             )}
           </Button>
