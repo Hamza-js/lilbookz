@@ -15,8 +15,10 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
     setSelectAll(!selectAll);
     if (!selectAll) {
       setSelectedStudents(studentsToDisplay.map((student) => student.id));
+      console.log('Selected students:', selectedStudents);
     } else {
       setSelectedStudents([]);
+      console.log('Selected students:', selectedStudents);
     }
   };
 
@@ -25,8 +27,10 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
       setSelectedStudents(
         selectedStudents.filter((studentId) => studentId !== id)
       );
+      console.log('Deselected student ID:', id);
     } else {
       setSelectedStudents([...selectedStudents, id]);
+      console.log('Selected student ID:', id);
     }
   };
 
@@ -48,7 +52,6 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
         : false;
 
       if (loggedInStatus !== true) {
-        // console.error('User is not logged in.');
         return;
       }
 
@@ -56,7 +59,6 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
       const storedToken = localStorage.getItem('tokenLilBookz');
 
       if (!userDataString || !storedToken) {
-        // console.error('User data or token not found in localStorage');
         return;
       }
 
@@ -108,28 +110,26 @@ const StudentList = ({ studentsToDisplay, filtersApplied }) => {
               throw new Error('Failed to request payment');
             }
           }
+        }
 
-          // console.log(finalSelectedStudentsWithExtras);
+        const formdata = new FormData();
+        formdata.append(
+          'students',
+          JSON.stringify(finalSelectedStudentsWithExtras)
+        );
+        formdata.append('customerid', userData.customerid);
 
-          const formdata = new FormData();
-          formdata.append(
-            'students',
-            JSON.stringify(finalSelectedStudentsWithExtras)
-          );
-          formdata.append('customerid', userData.customerid);
+        const response = await fetch(invoiceURL, {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${parsedToken.access_token}`,
+          },
+          body: formdata,
+        });
 
-          const response = await fetch(invoiceURL, {
-            method: 'POST',
-            headers: {
-              Authorization: `Bearer ${parsedToken.access_token}`,
-            },
-            body: formdata,
-          });
-
-          if (!response.ok) {
-            allInvoicesSent = false; // Set to false if any invoice failed
-            throw new Error('Failed to send invoices');
-          }
+        if (!response.ok) {
+          allInvoicesSent = false; // Set to false if any invoice failed
+          throw new Error('Failed to send invoices');
         }
 
         if (allInvoicesSent) {
