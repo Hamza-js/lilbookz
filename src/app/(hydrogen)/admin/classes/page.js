@@ -39,16 +39,6 @@ function Classes() {
   }, []);
 
   const {
-    isLoading: isLoading1,
-    error: error1,
-    data: getClassesData,
-    isFetching: isFetching1,
-  } = useQuery({
-    queryKey: ['getClasses'],
-    queryFn: getClasses,
-  });
-
-  const {
     isLoading: isLoading,
     error: error,
     data: franchiseClassesData,
@@ -69,7 +59,7 @@ function Classes() {
   });
 
   useEffect(() => {
-    if (!isLoading1 && !isLoading && !isLoading2) {
+    if (!isLoading && !isLoading2) {
       const mergedDataWithTypes = franchiseClassesData.result.map((fc) => {
         const classType = classTypes.find((ct) => ct.id === fc.classtype);
 
@@ -86,10 +76,12 @@ function Classes() {
         return mergedFcData;
       });
       setMergedData(mergedDataWithTypes);
-      localStorage.setItem('classDates', JSON.stringify(franchiseClassesData.dates));
-      // console.log('mergedDataWithTypes', mergedDataWithTypes);
+      localStorage.setItem(
+        'classDates',
+        JSON.stringify(franchiseClassesData.dates)
+      );
     }
-  }, [franchiseClassesData, isLoading1, isLoading2, isLoading, classTypes]);
+  }, [franchiseClassesData, isLoading2, isLoading, classTypes]);
 
   // console.log('mergedData', mergedData);
 
@@ -111,12 +103,12 @@ function Classes() {
   return (
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
-      {isLoading1 && isLoading && isLoading2 && (
+      {isLoading && isLoading2 && (
         <div className="flex h-10 items-center justify-center">
           <Loader size="xl" />
         </div>
       )}
-      {!isLoading1 && !isLoading && !isLoading2 && (
+      {!isLoading && !isLoading2 && (
         <>
           <ListClasses
             mergedData={mergedData}

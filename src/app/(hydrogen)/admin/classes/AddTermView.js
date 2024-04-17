@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
-import DatePicker, {
-  Calendar,
-  getAllDatesInRange,
-} from 'react-multi-date-picker';
+import { Calendar } from 'react-multi-date-picker';
 import { Button, Text } from 'rizzui';
 import Spinner from '@/components/ui/spinner';
 import toast from 'react-hot-toast';
@@ -74,12 +71,17 @@ const AddTermView = ({ classItem }) => {
 
           const formattedDates = selectedDates.map((date) => {
             if (typeof date === 'object') {
-              const formattedDate = new Date(date).toISOString().slice(0, 10);
+              const utcDate = new Date(date);
+              utcDate.setMinutes(
+                utcDate.getMinutes() - utcDate.getTimezoneOffset()
+              );
+              const formattedDate = utcDate.toISOString().slice(0, 10);
               return `"${formattedDate}"`;
             } else {
               return date;
             }
           });
+
           const datesString = `[${formattedDates.join(',')}]`;
 
           const formdata = new FormData();
@@ -102,6 +104,7 @@ const AddTermView = ({ classItem }) => {
             if (result.result === 'success') {
               closeModal();
               toast.success(<Text as="b">Term added successfully.</Text>);
+              window.location.reload();
             } else {
               closeModal();
               toast.error(<Text as="b">Error while adding term.</Text>);
@@ -132,8 +135,6 @@ const AddTermView = ({ classItem }) => {
         value={selectedDates}
         onChange={(dates) => setSelectedDates(dates)}
       />
-
-      {/* <p>{selectedDates.length > 0 && selectedDates.join(', ')}</p> */}
 
       <div className="mt-5 flex justify-end">
         <Button
