@@ -1,3 +1,6 @@
+'use client';
+
+
 import baseUrl from '@/utils/baseUrl';
 
 export async function getShows() {

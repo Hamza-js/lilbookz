@@ -1,3 +1,4 @@
+'use client';
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';

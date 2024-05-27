@@ -1,3 +1,4 @@
+'use client';
 import { HiDotsVertical } from 'react-icons/hi';
 import React, { useState } from 'react';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
@@ -13,7 +14,7 @@ const ListCanceledStudents = ({ allCancelledStudents }) => {
   const [loading, setLoading] = useState(false);
 
   const handleReactivate = async (student) => {
-    closeDrawer()
+    closeDrawer();
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
       ? JSON.parse(loggedInStatusString)

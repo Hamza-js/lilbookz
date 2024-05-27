@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Calendar } from 'react-multi-date-picker';
 import { Button, Text } from 'rizzui';

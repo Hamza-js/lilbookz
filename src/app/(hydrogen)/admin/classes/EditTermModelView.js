@@ -1,3 +1,5 @@
+'use client';
+
 import React, { useState } from 'react';
 import { Button, Text } from 'rizzui';
 import Spinner from '@/components/ui/spinner';

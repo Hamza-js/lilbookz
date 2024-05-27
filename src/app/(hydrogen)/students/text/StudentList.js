@@ -1,8 +1,12 @@
+'use client';
+
+
 import React, { useState } from 'react';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
 import { Button, Text } from 'rizzui';
 import baseUrl from '@/utils/baseUrl';
 import { toast } from 'react-hot-toast';
+
 import Spinner from '@/components/ui/spinner';
 
 const StudentList = ({

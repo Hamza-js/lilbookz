@@ -1,3 +1,6 @@
+'use client';
+
+
 import baseUrl from '@/utils/baseUrl';
 import React, { useEffect, useState } from 'react';
 import { Select, Text, Button } from 'rizzui';

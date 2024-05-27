@@ -1,3 +1,6 @@
+'use client';
+
+
 import React, { useState } from 'react';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
 import { ActionIcon, Button, Text, Title } from 'rizzui';
