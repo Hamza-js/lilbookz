@@ -32,7 +32,7 @@ export default function OtherPagesLayout({
             notIn ? 'justify-between' : 'justify-center'
           )}
         >
-          <Link href={'/'}>
+          {/* <Link href={'/'}>
             {theme === 'light' ? (
               <Image
                 src={siteConfig.blackLogo}
@@ -46,8 +46,8 @@ export default function OtherPagesLayout({
                 height={100}
               />
             )}
-          </Link>
-          {notIn && (
+          </Link> */}
+          {/* {notIn && (
             <Button
               variant="outline"
               size="sm"
@@ -56,11 +56,11 @@ export default function OtherPagesLayout({
             >
               Go to home
             </Button>
-          )}
+          )} */}
         </div>
       </div>
       {children}
-      <SocialItems />
+      {/* <SocialItems /> */}
     </div>
   );
 }

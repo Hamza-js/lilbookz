@@ -46,9 +46,11 @@ export default function Sidebar({ className }: { className?: string }) {
       <SimpleBar className="h-[calc(100%-80px)]">
         <div className="mt-4 pb-3 3xl:mt-6">
           {menuItems.map((item, index) => {
-            const isActive = pathname === (item?.href as string);
+            const isActive = pathname === (item?.href as any);
+
             const pathnameExistInDropdowns: any = item?.dropdownItems?.filter(
-              (dropdownItem) => dropdownItem.href === pathname
+              // @ts-ignore
+              (dropdownItem: any) => dropdownItem?.href === pathname
             );
             const isDropdownOpen = Boolean(pathnameExistInDropdowns?.length);
 
@@ -98,17 +100,24 @@ export default function Sidebar({ className }: { className?: string }) {
                         {item?.dropdownItems?.map((dropdownItem, index) => {
                           const isChildActive =
                             pathname === (dropdownItem?.href as string);
+                          const isDisabled =
+                            // @ts-ignore
+                            dropdownItem?.disabled && dropdownItem?.disabled;
+                          console.log('isDisabled', isDisabled);
 
                           return (
                             <Link
-                              href={dropdownItem?.href}
+                              href={!isDisabled ? '#' : dropdownItem?.href}
                               key={dropdownItem?.name + index}
                               className={cn(
                                 'mx-3.5 mb-0.5 flex items-center justify-between rounded-md px-3.5 py-2 font-medium capitalize last-of-type:mb-1 lg:last-of-type:mb-2 2xl:mx-5',
                                 isChildActive
                                   ? 'text-primary'
-                                  : 'text-gray-500 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900'
+                                  : !isDisabled
+                                    ? 'cursor-not-allowed text-gray-400 line-through '
+                                    : 'text-gray-500 transition-colors duration-200 hover:bg-gray-100 hover:text-gray-900'
                               )}
+                              onClick={(e) => !isDisabled && e.preventDefault()}
                             >
                               <div className="flex items-center truncate">
                                 <span
@@ -123,9 +132,9 @@ export default function Sidebar({ className }: { className?: string }) {
                                   {dropdownItem?.name}
                                 </span>
                               </div>
-                              {dropdownItem?.badge?.length ? (
+                              {/* {dropdownItem?.badge?.length ? (
                                 <StatusBadge status={dropdownItem?.badge} />
-                              ) : null}
+                              ) : null} */}
                             </Link>
                           );
                         })}
@@ -161,9 +170,6 @@ export default function Sidebar({ className }: { className?: string }) {
                           )}
                           <span className="truncate">{item.name}</span>
                         </div>
-                        {/* {item?.badge?.length ? (
-                          <StatusBadge status={item?.badge} />
-                        ) : null} */}
                       </div>
                     )}
                   </>

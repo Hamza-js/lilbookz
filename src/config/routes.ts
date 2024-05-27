@@ -15,7 +15,24 @@ export const routes = {
   accounts: {
     invoicing: '/accounts/invoicing',
   },
-  documents: '/documents',
+  documents: {
+    General:
+      'https://www.dropbox.com/scl/fo/tyj91nxs67w6o43rjv8pb/h?rlkey=w9350q0d10877wh6d8fasft6u&st=vz37dwae&dl=0',
+    Ballet:
+      'https://www.dropbox.com/scl/fo/684vvhcgo6vol52mln9tc/AKsoyUYlO7Wtm1i1k8aDP6k?rlkey=epaguvqiyowb916zj1ipluuxk&st=a1v55j3t&dl=0',
+    'Music & MOVE IT!':
+      'https://www.dropbox.com/scl/fo/595bjppdk9dggb6sp6bwe/AMQzD8dxpiFMjE7ZKgB1os8?rlkey=wrlj0efdm4gtyq49vk9rf1euo&st=wgumcbux&dl=0',
+    'Street/Hip Hop':
+      'https://www.dropbox.com/scl/fo/8plfx5wjhjfgjce1s9v1m/h?rlkey=o4up7ui4yzu8b76xgsqrs78j8&st=6vp60te8&dl=0',
+    Tap: 'https://www.dropbox.com/scl/fo/zvof3wlwx1ju8z5rdhdwh/AFZX8KmoYygZsU-14ShyyqI?rlkey=4gw9nnmc229sg4qyqul73pj61&st=c0hnleji&dl=0',
+  },
+  socials: {
+    General: 'https://lilbeatz.com/lil-beatz-creative',
+    Ballet: 'https://lilbeatz.com/ballet-social',
+    'Music & MOVE IT!': 'https://lilbeatz.com/musicmoveit-social',
+    'Street/Hip Hop': 'https://lilbeatz.com/hiphop-social',
+    Tap: 'https://lilbeatz.com/tap-social',
+  },
   supportt: '/supportt',
 
   eCommerce: {
