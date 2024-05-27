@@ -1,3 +1,5 @@
+'use client';
+
 import { routes } from '@/config/routes';
 import { TbUsersGroup } from 'react-icons/tb';
 import { LuUser } from 'react-icons/lu';
