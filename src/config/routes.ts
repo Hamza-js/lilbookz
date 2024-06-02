@@ -28,10 +28,9 @@ export const routes = {
   },
   socials: {
     General: 'https://lilbeatz.com/lil-beatz-creative',
-    Ballet: 'https://lilbeatz.com/ballet-social',
-    'Music & MOVE IT!': 'https://lilbeatz.com/musicmoveit-social',
-    'Street/Hip Hop': 'https://lilbeatz.com/hiphop-social',
-    Tap: 'https://lilbeatz.com/tap-social',
+    'Ballet & Tap': 'https://lilbeatz.com/lil-beatz-creative#ballettap',
+    'Music & MOVE IT!': 'https://lilbeatz.com/lil-beatz-creative#moveit',
+    'Street/Hip Hop': 'https://lilbeatz.com/lil-beatz-creative#street',
   },
   supportt: '/supportt',
 

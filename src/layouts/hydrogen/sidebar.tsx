@@ -8,12 +8,13 @@ import { Collapse } from '@/components/ui/collapse';
 import cn from '@/utils/class-names';
 import { PiCaretDownBold } from 'react-icons/pi';
 import SimpleBar from '@/components/ui/simplebar';
-import { menuItems } from '@/layouts/hydrogen/menu-items';
+import MenuItems from '@/layouts/hydrogen/menu-items';
 import Logo from '@/components/logo';
 import StatusBadge from '@/components/get-status-badge';
 
 export default function Sidebar({ className }: { className?: string }) {
   const pathname = usePathname();
+  const items = MenuItems();
 
   const handleSupportClick = () => {
     const emailAddress = 'support@lilbeatz.com';
@@ -29,7 +30,7 @@ export default function Sidebar({ className }: { className?: string }) {
   return (
     <aside
       className={cn(
-        'fixed bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-white dark:bg-gray-100/50 2xl:w-72',
+        'fixed bottom-0 start-0 z-50 h-full w-[270px] border-e-2 border-gray-100 bg-white dark:bg-gray-100/50 2xl:w-72 ',
         className
       )}
     >
@@ -37,17 +38,17 @@ export default function Sidebar({ className }: { className?: string }) {
         <Link
           href={'/students/current'}
           aria-label="Site Logo"
-          className="bg-red-500 text-gray-800 hover:text-gray-900"
+          className=" text-gray-800 hover:text-gray-900"
         >
           <Logo className="max-w-[155px]" />
         </Link>
       </div>
 
-      <SimpleBar className="h-[calc(100%-80px)]">
+      <SimpleBar className="h-[calc(100%-80px)] pb-10">
         <div className="mt-4 pb-3 3xl:mt-6">
-          {menuItems.map((item, index) => {
+          {// @ts-ignore
+          items?.map((item, index) => {
             const isActive = pathname === (item?.href as any);
-
             const pathnameExistInDropdowns: any = item?.dropdownItems?.filter(
               // @ts-ignore
               (dropdownItem: any) => dropdownItem?.href === pathname
@@ -97,7 +98,8 @@ export default function Sidebar({ className }: { className?: string }) {
                           </div>
                         )}
                       >
-                        {item?.dropdownItems?.map((dropdownItem, index) => {
+                        {// @ts-ignore
+                        item?.dropdownItems?.map((dropdownItem, index) => {
                           const isChildActive =
                             pathname === (dropdownItem?.href as string);
                           const isDisabled =
@@ -132,9 +134,6 @@ export default function Sidebar({ className }: { className?: string }) {
                                   {dropdownItem?.name}
                                 </span>
                               </div>
-                              {/* {dropdownItem?.badge?.length ? (
-                                <StatusBadge status={dropdownItem?.badge} />
-                              ) : null} */}
                             </Link>
                           );
                         })}
