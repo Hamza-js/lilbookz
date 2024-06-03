@@ -5,15 +5,11 @@ import toast from 'react-hot-toast';
 import { SubmitHandler, Controller } from 'react-hook-form';
 import { Form } from '@/components/ui/form';
 import { Text } from '@/components/ui/text';
-import FormGroup from '@/app/shared/form-group';
 import {
   defaultValues,
   personalInfoFormSchema,
   PersonalInfoFormTypes,
 } from '@/utils/validators/personal-info.schema';
-import UploadZone from '@/components/ui/file-upload/upload-zone';
-import { countries, roles, timezones } from '@/data/forms/my-details';
-import AvatarUpload from '@/components/ui/file-upload/avatar-upload';
 import { Input } from '@/components/ui/input';
 
 const QuillEditor = dynamic(() => import('@/components/ui/quill-editor'), {
@@ -47,7 +43,7 @@ function StudentEmail() {
                 placeholder="Subject"
                 // {...register('first_name')}
                 // error={errors.first_name?.message}
-                className="flex-grow mb-3"
+                className="mb-3 flex-grow"
               />
 
               <Controller
