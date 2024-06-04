@@ -4,6 +4,7 @@ import baseUrl from '@/utils/baseUrl';
 import { toast } from 'react-hot-toast';
 import { Text } from 'rizzui';
 import { redirect } from 'next/navigation';
+import axios from 'axios';
 
 export async function fetchAllStudents(router) {
   const loggedInStatusString = localStorage.getItem('loggedInStatus');
