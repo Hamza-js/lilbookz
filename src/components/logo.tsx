@@ -12,7 +12,7 @@ export default function Logo({ iconOnly = false, ...props }: IconProps) {
   return (
     <>
       {theme === 'light' ? (
-        <Image src={siteConfig.blackLogo} alt={siteConfig.title} height={100} />
+        <Image src={siteConfig.whiteLogo} alt={siteConfig.title} height={100} />
       ) : (
         <Image src={siteConfig.whiteLogo} alt={siteConfig.title} height={100} />
       )}

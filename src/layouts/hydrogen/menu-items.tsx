@@ -31,10 +31,6 @@ const MenuItems = () => {
 
   return [
     {
-      name: 'Overview',
-    },
-    // label end
-    {
       name: 'Students',
       href: '#',
       icon: <TbUsersGroup />,
