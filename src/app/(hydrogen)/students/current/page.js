@@ -238,6 +238,8 @@ function StudentCurrent() {
     router.push('/students/current/email');
   };
 
+  let changeClassId;
+
   const handleChangeClass = async (student) => {
     closeDrawer();
     openModal({
@@ -263,7 +265,7 @@ function StudentCurrent() {
                   name="class"
                   value={classItem.id}
                   className="mr-2"
-                  onChange={() => setSelectClass(classItem.id)}
+                  onChange={() => (changeClassId = classItem.id)}
                 />
                 <span className="text-lg">
                   {classItem.day} @ {classItem.time} - {classItem.town}
@@ -311,7 +313,7 @@ function StudentCurrent() {
 
       const formdata = new FormData();
       formdata.append('studentid', student.id);
-      formdata.append('classid', selectedClass);
+      formdata.append('classid', changeClassId);
       formdata.append('oldclassid', student.classid);
       formdata.append('customerid', userData.customerid);
       formdata.append('memberid', userData.memberid);
@@ -410,9 +412,7 @@ function StudentCurrent() {
     }
   };
 
-  const handleRadioChange = (classId) => {
-    setSelectedClass(classId);
-  };
+  let addToAnotherClassId;
 
   const handleAddClass = async (student) => {
     closeDrawer();
@@ -439,7 +439,7 @@ function StudentCurrent() {
                   name="selectedClass"
                   value={classItem.id}
                   className="mr-2"
-                  onChange={() => handleRadioChange(classItem.id)}
+                  onChange={() => (addToAnotherClassId = classItem.id)}
                   checked={selectedClass === classItem.id}
                 />
                 <span className="text-lg">
@@ -489,8 +489,9 @@ function StudentCurrent() {
 
       const formdata = new FormData();
       formdata.append('studentid', student.id);
-      formdata.append('classid', selecteddClass);
+      formdata.append('classid', JSON.stringify(['885']));
       formdata.append('memberid', userData.memberid);
+      formdata.append('customerid', userData.customerid);
 
       const requestOptions = {
         method: 'POST',
