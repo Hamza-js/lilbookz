@@ -70,9 +70,20 @@ const ClassForm = ({ classTypes, classGenres }) => {
     value: genre.id,
   }));
 
-  const formatedTypes = classTypes.map((type) => ({
-    label: type.name,
-    value: type.id,
+  function getMinAge(ageRange) {
+    const match = ageRange.match(/\((\d+)[^\d]*(\d*)\)/);
+    if (match) {
+      return parseInt(match[1], 10);
+    }
+    return Infinity;
+  }
+  const sortedClassTypes = classTypes.sort(
+    (a, b) => getMinAge(a.age_range) - getMinAge(b.age_range)
+  );
+
+  const formatedTypes = sortedClassTypes?.map((type) => ({
+    label: type?.name + type?.age_range,
+    value: type?.id,
   }));
 
   useEffect(() => {
@@ -212,7 +223,7 @@ const ClassForm = ({ classTypes, classGenres }) => {
             setTime('');
             setLoading(false);
             setLoading(false);
-            router.back()
+            router.back();
             toast.success(<Text as="b">Class added successfully</Text>);
           } else {
             toast.error(<Text as="b">Error while adding class</Text>);
