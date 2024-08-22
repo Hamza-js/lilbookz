@@ -60,6 +60,9 @@ const ClassForm = ({ classTypes, classGenres }) => {
   const [time, setTime] = useState('');
   const [fieldsFilled, setFieldsFilled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [link, setLink] = useState('');
+  const [automember, setAutomember] = useState(false);
+  const [disable, setDisable] = useState(false);
 
   const router = useRouter();
 
@@ -96,7 +99,6 @@ const ClassForm = ({ classTypes, classGenres }) => {
         address &&
         city &&
         country &&
-        billingNameNo &&
         capacity &&
         time
     );
@@ -143,6 +145,8 @@ const ClassForm = ({ classTypes, classGenres }) => {
     setBillingNameNo(event.target.value);
 
   const handleChangeCapacity = (event) => setCapacity(event.target.value);
+
+  const handlelinkCapacity = (event) => setLink(event.target.value);
 
   const toggleCalendar = () => setCalendarVisible(!calendarVisible);
 
@@ -194,6 +198,9 @@ const ClassForm = ({ classTypes, classGenres }) => {
       formdata.append('availability', capacity);
       formdata.append('customerid', userData.customerid);
       formdata.append('classGenre', genre);
+      formdata.append('booking_link', link);
+      formdata.append('automember', automember ? 1 : 0);
+      formdata.append('disable', disable ? 1 : 0);
 
       const requestOptions = {
         method: 'POST',
@@ -356,18 +363,6 @@ const ClassForm = ({ classTypes, classGenres }) => {
         </FormGroup>
 
         <FormGroup
-          title="Billing Name/No"
-          className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
-        >
-          <Input
-            type="url"
-            className="col-span-full"
-            placeholder="Enter Billing Name/No"
-            onChange={handleChangeBillingNameNo}
-          />
-        </FormGroup>
-
-        <FormGroup
           title="How many can the class hold?"
           className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
         >
@@ -377,6 +372,39 @@ const ClassForm = ({ classTypes, classGenres }) => {
             prefixClassName="relative pe-2.5 before:w-[1px] before:h-[38px] before:absolute before:bg-gray-300 before:-top-[9px] before:right-0"
             placeholder="Enter Number"
             onChange={handleChangeCapacity}
+          />
+        </FormGroup>
+
+        <FormGroup
+          title="Booking link"
+          className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+        >
+          <Input
+            type="url"
+            className="col-span-full"
+            prefixClassName="relative pe-2.5 before:w-[1px] before:h-[38px] before:absolute before:bg-gray-300 before:-top-[9px] before:right-0"
+            placeholder="Enter link here..."
+            onChange={handlelinkCapacity}
+          />
+        </FormGroup>
+        <FormGroup
+          title="Disable Trial"
+          className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+        >
+          <input
+            type="checkbox"
+            checked={automember}
+            onChange={(e) => setAutomember(e.target.checked)}
+          />
+        </FormGroup>
+        <FormGroup
+          title="Disable Class"
+          className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+        >
+          <input
+            type="checkbox"
+            checked={disable}
+            onChange={(e) => setDisable(e.target.checked)}
           />
         </FormGroup>
       </div>
