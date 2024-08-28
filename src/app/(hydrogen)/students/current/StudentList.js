@@ -1,6 +1,5 @@
 'use client';
 
-
 import React, { useState } from 'react';
 import { HiDotsVertical } from 'react-icons/hi';
 import { useDrawer } from '@/app/shared/drawer-views/use-drawer';
@@ -92,12 +91,17 @@ const StudentList = ({
       formdata.append('customerid', userData.customerid);
       formdata.append('memberid', userData.memberid);
 
+      console.log('classid', studentsToDisplay[0].classid);
+      console.log('classid', selectedStudents);
+      console.log('classid', userData.customerid);
+      console.log('classid', userData.memberid);
+
       try {
         const response = await fetch(url, {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${parsedToken.access_token}`,
-            'Content-Type': 'application/json',
+            // 'Content-Type': 'application/json',
           },
           body: formdata,
         });
