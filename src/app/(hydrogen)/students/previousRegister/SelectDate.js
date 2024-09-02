@@ -1,6 +1,5 @@
 'use client';
 
-
 import baseUrl from '@/utils/baseUrl';
 import React, { useEffect, useState } from 'react';
 import { Select, Text, Button } from 'rizzui';
@@ -46,48 +45,48 @@ export default function SelectDate({ dates, classid }) {
     setValue(options.length > 0 ? options[0] : null);
   }, [dates]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        // console.log('Trying to fetch data');
-        if (dates.length > 0) {
-          const loggedInStatusString = localStorage.getItem('loggedInStatus');
-          const loggedInStatus = loggedInStatusString
-            ? JSON.parse(loggedInStatusString)
-            : false;
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      // console.log('Trying to fetch data');
+      if (dates.length > 0) {
+        const loggedInStatusString = localStorage.getItem('loggedInStatus');
+        const loggedInStatus = loggedInStatusString
+          ? JSON.parse(loggedInStatusString)
+          : false;
 
-          if (loggedInStatus === true) {
-            const userDataString = localStorage.getItem('userData');
-            const userData = userDataString ? JSON.parse(userDataString) : null;
-            const storedToken = localStorage.getItem('tokenLilBookz');
-            const parsedToken = JSON.parse(storedToken);
-            const url = `${baseUrl}/api/getPreviousRegister?customerid=${userData.customerid}&classid=${classid}&classDate=${value.value}`;
+        if (loggedInStatus === true) {
+          const userDataString = localStorage.getItem('userData');
+          const userData = userDataString ? JSON.parse(userDataString) : null;
+          const storedToken = localStorage.getItem('tokenLilBookz');
+          const parsedToken = JSON.parse(storedToken);
+          const url = `${baseUrl}/api/getPreviousRegister?customerid=${userData.customerid}&classid=${classid}&classDate=${value.value}`;
 
-            const myHeaders = new Headers();
-            myHeaders.append(
-              'Authorization',
-              `Bearer ${parsedToken.access_token}`
-            );
+          const myHeaders = new Headers();
+          myHeaders.append(
+            'Authorization',
+            `Bearer ${parsedToken.access_token}`
+          );
 
-            const requestOptions = {
-              method: 'GET',
-              headers: myHeaders,
-              redirect: 'follow',
-            };
-            const response = await fetch(url, requestOptions);
-            const result = await response.json();
-            setResponseData(result.result);
-            console.log(result.result);
-          }
+          const requestOptions = {
+            method: 'GET',
+            headers: myHeaders,
+            redirect: 'follow',
+          };
+          const response = await fetch(url, requestOptions);
+          const result = await response.json();
+          setResponseData(result.result);
+          console.log(result.result);
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setLoading(false);
       }
-    };
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchData();
   }, [value]);
 
@@ -98,13 +97,12 @@ export default function SelectDate({ dates, classid }) {
   };
 
   const handleAttendanceChange = (item) => {
-    closeModal()
+    closeModal();
     const attendance = item.not_attended === '0' ? '1' : '0';
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
     const loggedInStatus = loggedInStatusString
       ? JSON.parse(loggedInStatusString)
       : false;
-
     if (loggedInStatus === true) {
       setLoading1(true);
       const userDataString = localStorage.getItem('userData');
@@ -118,8 +116,8 @@ export default function SelectDate({ dates, classid }) {
 
       const formdata = new FormData();
       formdata.append('attendance', attendance);
-      formdata.append('classDate', item.id);
-      formdata.append('studentid', attendance);
+      formdata.append('classDate', value?.value);
+      formdata.append('studentid', item.id);
 
       const requestOptions = {
         method: 'POST',
@@ -131,7 +129,7 @@ export default function SelectDate({ dates, classid }) {
       fetch(url, requestOptions)
         .then((response) => response.json())
         .then((result) => {
-          console.log(result);
+          fetchData();
           toast.success(
             <Text as="b">
               {`Attendance of ${item.child_first_name} ${item.child_last_name} updated successfully`}
