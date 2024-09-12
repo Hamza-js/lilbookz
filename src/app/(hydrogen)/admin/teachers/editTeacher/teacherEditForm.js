@@ -44,8 +44,16 @@ const TeacherEditForm = ({ teacherData }) => {
 
   const handleChangeBio = (event) => setBio(event.target.value);
 
-  const handleImageChange = (event) => setImage(event.target.files[0]); // Update image state when file input changes
-
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+    }
+  };
   const handleSave = () => {
     setLoading(true);
     const loggedInStatusString = localStorage.getItem('loggedInStatus');
