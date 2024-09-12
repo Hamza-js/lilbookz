@@ -58,6 +58,9 @@ const ClassForm = ({ classTypes, classGenres, classData }) => {
   const [time, setTime] = useState('');
   const [fieldsFilled, setFieldsFilled] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [link, setLink] = useState('');
+  const [automember, setAutomember] = useState(false);
+  const [disable, setDisable] = useState(false);
 
   const router = useRouter();
 
@@ -82,6 +85,9 @@ const ClassForm = ({ classTypes, classGenres, classData }) => {
     setTrialPrice(classData?.trial);
     setCapacity(classData?.availability);
     setTime(classData?.time);
+    setLink(classData?.booking_link);
+    setAutomember(classData?.automember === '1');
+    setDisable(classData?.disable === '1');
   }, [classData]);
 
   useEffect(() => {
@@ -183,6 +189,9 @@ const ClassForm = ({ classTypes, classGenres, classData }) => {
       formdata.append('availability', capacity);
       formdata.append('customerid', userData.customerid);
       formdata.append('id', classData.id);
+      formdata.append('booking_link', link);
+      formdata.append('automember', automember ? 1 : 0);
+      formdata.append('disable', disable ? 1 : 0);
 
       const requestOptions = {
         method: 'POST',
@@ -223,6 +232,8 @@ const ClassForm = ({ classTypes, classGenres, classData }) => {
         });
     }
   };
+
+  const handlelinkCapacity = (event) => setLink(event.target.value);
 
   return (
     <>
@@ -360,6 +371,40 @@ const ClassForm = ({ classTypes, classGenres, classData }) => {
             prefixClassName="relative pe-2.5 before:w-[1px] before:h-[38px] before:absolute before:bg-gray-300 before:-top-[9px] before:right-0"
             placeholder="Enter Number"
             onChange={handleChangeCapacity}
+          />
+        </FormGroup>
+
+        <FormGroup
+          title="Booking link"
+          className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+        >
+          <Input
+            value={link}
+            type="url"
+            className="col-span-full"
+            prefixClassName="relative pe-2.5 before:w-[1px] before:h-[38px] before:absolute before:bg-gray-300 before:-top-[9px] before:right-0"
+            placeholder="Enter link here..."
+            onChange={handlelinkCapacity}
+          />
+        </FormGroup>
+        <FormGroup
+          title="Disable Trial"
+          className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+        >
+          <input
+            type="checkbox"
+            checked={automember}
+            onChange={(e) => setAutomember(e.target.checked)}
+          />
+        </FormGroup>
+        <FormGroup
+          title="Disable Class"
+          className="pt-7 @2xl:pt-9 @3xl:grid-cols-12 @3xl:pt-11"
+        >
+          <input
+            type="checkbox"
+            checked={disable}
+            onChange={(e) => setDisable(e.target.checked)}
           />
         </FormGroup>
       </div>
