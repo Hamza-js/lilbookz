@@ -40,6 +40,7 @@ const StudentList = ({
   handleAddClass,
   handleMembershipReminderFunction,
   handleUpgrade,
+  handleEditStudent
 }) => {
   const { openDrawer, closeDrawer } = useDrawer();
   const [selectAll, setSelectAll] = useState(false);
@@ -225,6 +226,18 @@ const StudentList = ({
             <div className="flex w-64 items-center gap-2">
               <FaFileInvoice className="mr-2" /> {/* Icon for Send Invoice */}
               <span>Send Invoice</span>
+            </div>
+          </Button>
+
+          <Button
+            onClick={() => handleEditStudent(student)}
+            size="lg"
+            variant="outline"
+            className="mb-2 flex items-center"
+          >
+            <div className="flex w-64 items-center gap-2">
+              <FaEdit className="mr-2" />
+              <span>Edit Student</span>
             </div>
           </Button>
           {student.membership_paid === '0' ? (

@@ -805,6 +805,11 @@ function StudentCurrent() {
     }
   };
 
+  const handleEditStudent = (student) => {
+    localStorage.setItem('studentToEdit', JSON.stringify(student?.id));
+    router.push(`/students/current/editStudent/${student?.id}`);
+  };
+
   return (
     <div className="@container">
       <PageHeader title={pageHeader.title} breadcrumb={pageHeader.breadcrumb} />
@@ -854,6 +859,7 @@ function StudentCurrent() {
                 handleMembershipReminderFunction
               }
               handleUpgrade={handleUpgrade}
+              handleEditStudent={handleEditStudent}
             />
           </>
         )}
