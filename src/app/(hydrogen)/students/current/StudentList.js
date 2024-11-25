@@ -86,22 +86,28 @@ const StudentList = ({
 
       const url = `${baseUrl}/api/updateRegister?customerid=${userData.customerid}`;
 
-      const notAttendedIds = studentsToDisplay
+      const notAttendedIdsArray = studentsToDisplay
         .map((student) => student.id)
         .filter((id) => !selectedStudents.includes(id));
+
+      // Determine the final value for notAttendedIds
+      const notAttendedIds =
+        notAttendedIdsArray.length === 1
+          ? notAttendedIdsArray[0]
+          : notAttendedIdsArray;
 
       const formdata = new FormData();
       formdata.append('classid', studentsToDisplay[0].classid);
       formdata.append('id', selectedStudents);
-      formdata.append('notAttendedIds', JSON.stringify(notAttendedIds));
+      formdata.append('notAttendedIds', notAttendedIds);
       formdata.append('customerid', userData.customerid);
       formdata.append('memberid', userData.memberid);
 
       console.log('classid', studentsToDisplay[0].classid);
       console.log('id', selectedStudents);
       console.log('notAttendedIds', notAttendedIds);
-      console.log('classid', userData.customerid);
-      console.log('classid', userData.memberid);
+      console.log('customerid', userData.customerid);
+      console.log('memberid', userData.memberid);
 
       try {
         const response = await fetch(url, {
@@ -119,13 +125,11 @@ const StudentList = ({
 
         const result = await response.json();
         toast.success(<Text as="b">Registered successfully</Text>);
-        // console.log('Registered', result);
         setSelectedStudents([]);
         setLoading(false);
       } catch (error) {
         setLoading(false);
         toast.error(<Text as="b">Error while Registering</Text>);
-        // console.error('Error fetching data:', error);
         throw error;
       }
     } else {
